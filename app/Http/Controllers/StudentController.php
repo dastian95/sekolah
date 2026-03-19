@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -26,6 +27,65 @@ class StudentController extends Controller
         $student = Auth::guard('students')->user();
 
         return view('student.profile', compact('student'));
+    }
+
+    /**
+     * Show the form for editing the student's profile.
+     */
+    public function editProfile()
+    {
+        $student = Auth::guard('students')->user();
+        $restrictedStatuses = ['Sudah Dihubungi', 'tidak lulus', 'lulus'];
+
+        if (in_array($student->status, $restrictedStatuses)) {
+            return redirect()->route('student.dashboard')->with('error', 'Profil tidak dapat diubah karena status Anda saat ini.');
+        }
+
+        return view('student.profile-edit', compact('student'));
+    }
+
+    /**
+     * Update the student's profile in the database.
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::guard('students')->user();
+        $student = Student::findOrFail($user->id);
+        $restrictedStatuses = ['Sudah Dihubungi', 'tidak lulus', 'lulus'];
+
+        if (in_array($student->status, $restrictedStatuses)) {
+            return redirect()->route('student.dashboard')->with('error', 'Profil tidak dapat diubah.');
+        }
+
+        $validated = $request->validate([
+            'nama_lengkap' => 'required|string|max:255',
+            'username' => 'required|string|max:50|unique:students,username,' . $student->id,
+            'email' => 'required|email|max:255|unique:students,email,' . $student->id,
+            'telepon' => 'required|string|max:20',
+            'nisn' => 'required|string|max:20|unique:students,nisn,' . $student->id,
+            'nik' => 'required|string|max:20|unique:students,nik,' . $student->id,
+            'no_kk' => 'required|string|max:30',
+            'jenis_kelamin' => 'required|in:L,P',
+            'tempat_lahir' => 'required|string|max:100',
+            'tanggal_lahir' => 'required|date',
+            'agama' => 'required|string|max:50',
+            'anak_ke' => 'nullable|integer|min:1',
+            'jumlah_saudara' => 'nullable|integer|min:0',
+            'tinggal_bersama' => 'nullable|string|max:100',
+            'alamat' => 'required|string',
+            'nama_ayah' => 'required|string|max:255',
+            'pekerjaan_ayah' => 'nullable|string|max:100',
+            'penghasilan_ayah' => 'nullable|string|max:100',
+            'hp_ayah' => 'nullable|string|max:20',
+            'nama_ibu' => 'required|string|max:255',
+            'pekerjaan_ibu' => 'nullable|string|max:100',
+            'penghasilan_ibu' => 'nullable|string|max:100',
+            'hp_ibu' => 'nullable|string|max:20',
+        ]);
+
+        $student->update($validated);
+
+        return redirect()->route('student.dashboard')->with('success', 'Profil berhasil diperbarui!');
     }
 
     /**
@@ -87,7 +147,8 @@ class StudentController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
         ]);
 
-        $student = Auth::guard('students')->user();
+        $user = Auth::guard('students')->user();
+        $student = Student::findOrFail($user->id);
 
         if (!Hash::check($request->current_password, $student->password)) {
             return back()->withErrors(['current_password' => 'Password lama tidak sesuai.']);

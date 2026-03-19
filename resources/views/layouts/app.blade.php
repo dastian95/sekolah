@@ -17,11 +17,8 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Styles -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
-    
+    @stack('styles')
+
     <style>
         :root {
             --primary-blue: #0066cc;
@@ -92,6 +89,7 @@
             margin: 0 0.25rem;
             transition: all 0.3s ease;
             padding: 0.5rem 0.75rem !important;
+            position: relative;
         }
         
         .navbar-custom .nav-link:hover {
@@ -103,27 +101,47 @@
             color: var(--secondary-yellow) !important;
         }
         
-        /* Active Nav Link - Clean Square Box */
         .navbar-custom .nav-link.active {
             color: var(--secondary-yellow) !important;
             font-weight: 600;
-            background-color: #1a3a5c;
-            border: 2px solid #1a3a5c;
-            border-radius: 0px;
-            padding: 0.5rem 1rem !important;
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            border-bottom: 3px solid var(--secondary-yellow);
         }
         
-        .navbar-custom .nav-link.active:hover {
-            background-color: #1a3a5c;
-            color: var(--secondary-yellow) !important;
-            transform: translateY(-3px);
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        .navbar-custom .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 3px;
+            background-color: var(--secondary-yellow);
+            border-radius: 2px;
+        }
+        
+        /* Custom Login Button */
+        .navbar-custom .btn-login {
+            background-color: var(--secondary-yellow) !important;
+            color: var(--dark-blue) !important;
+            border-radius: 50px;
+            padding: 0.45rem 1.3rem;
+            font-weight: 700;
+            font-size: 0.88rem;
+            transition: all 0.3s ease;
+            border: none;
+            white-space: nowrap;
+            display: inline-block;
+            text-decoration: none;
+            position: relative;
+            z-index: 10;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .navbar-custom .btn-login:hover {
+            background-color: #fff !important;
+            color: var(--dark-blue) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
         
         /* Hero Section */
@@ -746,16 +764,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/#section-beranda') }}">Beranda</a>
+                        <a class="nav-link nav-scroll" data-section="section-home" href="{{ url('/#section-home') }}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('tentang-kami') ? 'active' : '' }}" href="{{ url('/#section-tentang') }}">Tentang Kami</a>
+                        <a class="nav-link nav-scroll" data-section="section-tentang" href="{{ url('/#section-tentang') }}">Tentang Kami</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('berita*') ? 'active' : '' }}" href="{{ url('/#section-berita') }}">Berita</a>
+                        <a class="nav-link nav-scroll" data-section="section-berita" href="{{ url('/#section-berita') }}">Berita</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('kontak') ? 'active' : '' }}" href="{{ url('/#section-kontak') }}">Kontak</a>
+                        <a class="nav-link nav-scroll" data-section="section-kontak" href="{{ url('/#section-kontak') }}">Kontak</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="pendaftaranDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -767,55 +785,11 @@
                         </ul>
                     </li>
 
-                    <!-- Search Form -->
                     <li class="nav-item ms-lg-2">
-                        <form class="d-flex navbar-search" action="{{ route('search') }}" method="GET">
-                            <div class="input-group">
-                                <input class="form-control form-control-sm" type="search" name="q" placeholder="Cari siswa, berita..." aria-label="Search" value="{{ request('q') }}">
-                                <button class="btn btn-outline-light btn-sm" type="submit"><i class="fas fa-search"></i></button>
-                            </div>
-                        </form>
+                        <a href="{{ route('unified.login') }}" class="btn btn-login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
                     </li>
-
-                    @guest
-                        <li class="nav-item ms-lg-2">
-                            <a href="{{ route('unified.login') }}" class="btn btn-login btn-sm">
-                                <i class="fas fa-sign-in-alt me-1"></i> Login
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarStudentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-graduate me-1"></i> {{ Auth::guard('students')->user()->nama }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarStudentDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('student.dashboard') }}">
-                                        <i class="fas fa-home fa-fw me-2"></i> Dashboard Siswa
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('student.profile') }}">
-                                        <i class="fas fa-id-card fa-fw me-2"></i> Profil Saya
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('student.graduation.status') }}">
-                                        <i class="fas fa-graduation-cap fa-fw me-2"></i> Status Kelulusan
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="POST" action="{{ route('unified.logout') }}" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item" style="background: none; border: none; padding: 0.5rem 1rem; cursor: pointer;">
-                                            <i class="fas fa-sign-out-alt fa-fw me-2"></i> Logout
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
                 </ul>
             </div>
         </div>
@@ -984,7 +958,7 @@
                         }, 100);
                     }
                 } else {
-                    // Default: set Home as active
+                    // Default: set Beranda as active
                     navScrollLinks.forEach(link => {
                         if (link.getAttribute('data-section') === 'section-home') {
                             link.classList.add('active');
@@ -1016,10 +990,12 @@
             // ===== NAVBAR SCROLL SHADOW EFFECT =====
             window.addEventListener('scroll', function() {
                 const navbar = document.querySelector('.navbar-custom');
-                if (window.scrollY > 10) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
+                if (navbar) {
+                    if (window.scrollY > 10) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
                 }
             });
         });

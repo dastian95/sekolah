@@ -65,6 +65,11 @@ Route::middleware('guest')->controller(StudentAuthController::class)->group(func
 Route::middleware('auth:students')->controller(StudentController::class)->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/profile', 'profile')->name('profile');
+
+    // Edit and Update Profile
+    Route::get('/profile/edit', 'editProfile')->name('profile.edit');
+    Route::put('/profile/update', 'updateProfile')->name('profile.update');
+
     Route::get('/graduation-status', 'graduationStatus')->name('graduation.status');
     Route::get('/certificate', 'downloadCertificate')->name('certificate.download');
     Route::get('/change-password', 'changePassword')->name('change-password');

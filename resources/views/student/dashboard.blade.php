@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.student')
 
 @section('title', 'Dashboard Siswa - ' . auth('students')->user()->nama)
 
@@ -140,9 +140,20 @@
                         </div>
 
                         <div class="mt-3">
-                            <a href="{{ route('student.profile') }}" class="btn btn-sm btn-primary">
-                                <i class="fas fa-edit me-1"></i> Lihat Detail Lengkap
-                            </a>
+                            @php
+                                $restrictedStatuses = ['Sudah Dihubungi', 'tidak lulus', 'lulus'];
+                            @endphp
+
+                            @if (!in_array(auth('students')->user()->status, $restrictedStatuses))
+                                <a href="{{ route('student.profile.edit') }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit me-1"></i> Edit Profil
+                                </a>
+                            @else
+                                <p class="text-muted fst-italic small mb-0">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Data tidak dapat diubah karena status Anda saat ini adalah "{{ auth('students')->user()->status }}".
+                                </p>
+                            @endif
                         </div>
                     </div>
                 </div>

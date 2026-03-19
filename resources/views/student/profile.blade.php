@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.student')
 
 @section('title', 'Profil Siswa - ' . auth('students')->user()->nama)
 
