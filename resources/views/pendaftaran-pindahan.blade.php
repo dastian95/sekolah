@@ -4,9 +4,9 @@
 
 @section('content')
 <!-- Page Header -->
-<section style="background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white; padding: 3rem 0;">
+<section style="background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white; padding: 80px 0 3rem 0;">
     <div class="container-lg">
-        <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0;">Pendaftaran Siswa Pindahan</h1>
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0; line-height: 1.2;">Pendaftaran Siswa Pindahan</h1>
         <p style="margin-top: 0.5rem; font-size: 1.1rem; opacity: 0.9;">Penerimaan Siswa Pindahan (Transfer) SDIT Labitech Insan Mulia</p>
     </div>
 </section>

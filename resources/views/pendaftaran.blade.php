@@ -6,7 +6,7 @@
 <style>
     .ppdb-hero {
         background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-        padding: 80px 0 50px;
+        padding: 100px 0 50px;
         color: white;
         text-align: center;
     }

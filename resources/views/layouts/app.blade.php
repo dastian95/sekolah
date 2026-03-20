@@ -781,6 +781,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="pendaftaranDropdown">
                             <li><a class="dropdown-item" href="{{ route('pendaftaran') }}">Siswa Baru</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('pendaftaran-pindahan') }}">Siswa Pindahan</a></li>
                         </ul>
                     </li>
