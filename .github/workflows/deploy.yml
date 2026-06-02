@@ -21,7 +21,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
-      - name: Deploy to Hostinger via SSH
+      - name: Upload files via SSH
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -31,36 +31,28 @@ jobs:
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
             
-            # Initialize git if not already initialized
-            if [ ! -d .git ]; then
-              git init
-              git remote add origin https://github.com/dastian95/sekolah.git
-              git fetch origin main
-              git checkout main
-            else
-              git fetch origin main
-              git reset --hard origin/main
-            fi
+            # Backup current .env
+            cp .env .env.backup 2>/dev/null || true
             
-            # Install dependencies and clear cache
+            # Download latest code from GitHub
+            curl -L https://github.com/dastian95/sekolah/archive/refs/heads/main.zip -o main.zip
+            unzip -o main.zip
+            cp -r sekolah-main/* .
+            rm -rf sekolah-main main.zip
+            
+            # Restore .env
+            mv .env.backup .env 2>/dev/null || true
+            
+            # Install dependencies
             composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
             
-            # Put app in maintenance mode
-            php artisan down || true
-            
             # Run migrations
-            php artisan migrate --force
+            php artisan migrate --force 2>/dev/null || true
             
-            # Create storage link
-            php artisan storage:link || true
+            # Cache configuration
+            php artisan config:cache 2>/dev/null || true
+            php artisan route:cache 2>/dev/null || true
+            php artisan view:cache 2>/dev/null || true
             
-            # Cache configuration and routes
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            
-            # Restart queue
-            php artisan queue:restart || true
-            
-            # Bring app back online
-            php artisan up
+            # Set permissions
+            chmod -R 755 storage/ bootstrap/cache/ 2>/dev/null || true
