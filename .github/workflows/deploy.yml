@@ -19,28 +19,13 @@ jobs:
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
             
-            echo "=== Generating APP_KEY if empty ==="
-            if grep -q "^APP_KEY=$" .env || ! grep -q "^APP_KEY=" .env; then
-              php artisan key:generate --force
-              echo "✓ APP_KEY generated"
-            fi
-            
-            echo "=== Running migrations ==="
+            # Run migrations
             php artisan migrate --force 2>&1 || true
             
-            echo "=== Creating storage link ==="
-            php artisan storage:link 2>&1 || true
-            
-            echo "=== Caching configuration ==="
+            # Clear and cache configuration
+            php artisan cache:clear 2>&1 || true
             php artisan config:cache 2>&1 || true
             php artisan route:cache 2>&1 || true
             php artisan view:cache 2>&1 || true
             
-            echo "=== Fixing permissions ==="
-            chmod -R 755 storage/ bootstrap/cache/ 2>&1 || true
-            chmod 644 .env 2>&1 || true
-            
-            echo "=== Clearing old caches ==="
-            php artisan cache:clear 2>&1 || true
-            
-            echo "✓ Deployment completed successfully!"
+            echo "✓ Deployment completed"
