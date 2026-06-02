@@ -19,6 +19,12 @@ jobs:
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
             
+            echo "=== Checking PHP version ==="
+            php -v
+            
+            echo "=== Installing composer dependencies ==="
+            composer install --no-dev --optimize-autoloader --ignore-platform-reqs 2>&1
+            
             echo "=== Clearing all caches ==="
             php artisan cache:clear 2>&1 || true
             php artisan config:clear 2>&1 || true
