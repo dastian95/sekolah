@@ -19,28 +19,48 @@ jobs:
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
             
-            echo "=== Checking PHP version ==="
-            php -v
+            echo "=== Checking available PHP versions ==="
+            php -v || true
+            php74 -v || true
+            php75 -v || true
+            php80 -v || true
+            php81 -v || true
+            php82 -v || true
+            php83 -v || true
+            
+            # Try to find PHP 8.2+, fallback to php
+            if command -v php82 &> /dev/null; then
+              PHP_BIN="php82"
+            elif command -v php83 &> /dev/null; then
+              PHP_BIN="php83"
+            elif command -v php81 &> /dev/null; then
+              PHP_BIN="php81"
+            else
+              PHP_BIN="php"
+            fi
+            
+            echo "=== Using PHP: $PHP_BIN ==="
+            $PHP_BIN -v
             
             echo "=== Installing composer dependencies ==="
             composer install --no-dev --optimize-autoloader --ignore-platform-reqs 2>&1
             
             echo "=== Clearing all caches ==="
-            php artisan cache:clear 2>&1 || true
-            php artisan config:clear 2>&1 || true
-            php artisan route:clear 2>&1 || true
-            php artisan view:clear 2>&1 || true
+            $PHP_BIN artisan cache:clear 2>&1 || true
+            $PHP_BIN artisan config:clear 2>&1 || true
+            $PHP_BIN artisan route:clear 2>&1 || true
+            $PHP_BIN artisan view:clear 2>&1 || true
             
             echo "=== Running migrations ==="
-            php artisan migrate --force 2>&1 || true
+            $PHP_BIN artisan migrate --force 2>&1 || true
             
             echo "=== Creating storage link ==="
-            php artisan storage:link 2>&1 || true
+            $PHP_BIN artisan storage:link 2>&1 || true
             
             echo "=== Caching for production ==="
-            php artisan config:cache 2>&1 || true
-            php artisan route:cache 2>&1 || true
-            php artisan view:cache 2>&1 || true
+            $PHP_BIN artisan config:cache 2>&1 || true
+            $PHP_BIN artisan route:cache 2>&1 || true
+            $PHP_BIN artisan view:cache 2>&1 || true
             
             echo "=== Setting permissions ==="
             chmod -R 755 storage/ bootstrap/cache/ 2>&1 || true
