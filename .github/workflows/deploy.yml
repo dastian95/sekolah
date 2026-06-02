@@ -22,7 +22,7 @@ jobs:
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.6
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
