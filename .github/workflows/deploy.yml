@@ -12,6 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
+
       - name: Deploy to Hostinger
         uses: appleboy/ssh-action@v1.1.0
         with:
@@ -21,6 +30,38 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
-            pwd
-            ls -la
-            echo "Deployment running..."
+            
+            echo "=== Backup .env ==="
+            cp .env .env.backup 2>/dev/null || true
+            
+            echo "=== Download latest code from GitHub ==="
+            curl -L -o main.zip https://github.com/dastian95/sekolah/archive/refs/heads/main.zip 2>&1
+            
+            echo "=== Extract files ==="
+            unzip -o -q main.zip
+            cp -r sekolah-main/* .
+            rm -rf sekolah-main main.zip
+            
+            echo "=== Restore .env ==="
+            mv .env.backup .env 2>/dev/null || true
+            
+            echo "=== Install dependencies ==="
+            composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
+            
+            echo "=== Run migrations ==="
+            php artisan migrate --force
+            
+            echo "=== Create storage link ==="
+            php artisan storage:link || true
+            
+            echo "=== Cache configuration ==="
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            
+            echo "=== Set permissions ==="
+            chmod -R 755 storage/ bootstrap/cache/
+            chmod 644 .env
+            
+            echo "=== Deployment completed ==="
+            php artisan --version
