@@ -45,19 +45,8 @@ jobs:
             echo "=== Restore .env ==="
             mv .env.backup .env 2>/dev/null || true
             
-            echo "=== Generate APP_KEY if not exists ==="
-            if grep -q "^APP_KEY=$" .env; then
-              php artisan key:generate
-              echo "✓ APP_KEY generated"
-            else
-              echo "✓ APP_KEY already exists"
-            fi
-            
             echo "=== Install dependencies ==="
             composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
-            
-            echo "=== Test database connection ==="
-            php artisan tinker --execute="echo DB::connection()->getPdo() ? '✓ Database connected' : '✗ Database failed';"
             
             echo "=== Run migrations ==="
             php artisan migrate --force
