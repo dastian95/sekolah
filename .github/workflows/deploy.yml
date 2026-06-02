@@ -19,13 +19,24 @@ jobs:
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
             
-            # Run migrations
+            echo "=== Clearing all caches ==="
+            php artisan cache:clear 2>&1 || true
+            php artisan config:clear 2>&1 || true
+            php artisan route:clear 2>&1 || true
+            php artisan view:clear 2>&1 || true
+            
+            echo "=== Running migrations ==="
             php artisan migrate --force 2>&1 || true
             
-            # Clear and cache configuration
-            php artisan cache:clear 2>&1 || true
+            echo "=== Creating storage link ==="
+            php artisan storage:link 2>&1 || true
+            
+            echo "=== Caching for production ==="
             php artisan config:cache 2>&1 || true
             php artisan route:cache 2>&1 || true
             php artisan view:cache 2>&1 || true
             
-            echo "✓ Deployment completed"
+            echo "=== Setting permissions ==="
+            chmod -R 755 storage/ bootstrap/cache/ 2>&1 || true
+            
+            echo "✓ Deployment completed successfully!"
