@@ -21,25 +21,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          protocol: ftps
-          port: 21
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .env
-            *.zip
-            storage/logs/**
-            bootstrap/cache/**
-
-      - name: Post-deploy via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -48,7 +30,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
-            composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
+            git pull origin main
+            composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
             php artisan down
             php artisan migrate --force
             php artisan storage:link
