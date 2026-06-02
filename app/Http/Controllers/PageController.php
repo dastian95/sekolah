@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Certificate;
 use App\Models\News;
+use App\Models\Partnership;
 use App\Models\SiteSetting;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
@@ -32,6 +34,16 @@ class PageController extends Controller
     }
 
     /**
+     * Display a single branch detail page.
+     */
+    public function showBranch(Branch $branch): View
+    {
+        abort_unless($branch->is_active, 404);
+        $otherBranches = Branch::active()->ordered()->where('id', '!=', $branch->id)->get();
+        return view('branch-detail', compact('branch', 'otherBranches'));
+    }
+
+    /**
      * Display the about page.
      */
     public function about(): View
@@ -53,15 +65,26 @@ class PageController extends Controller
     }
 
     /**
-     * Display a single news article.
+     * Display a single news article (public — published only).
      */
     public function showNews(News $news): View
     {
-        if (!$news->is_published) {
-            abort(404);
-        }
+        abort_unless($news->is_published, 404);
 
-        return view('news-detail', compact('news'));
+        $recentNews = News::where('is_published', true)
+            ->where('id', '!=', $news->id)
+            ->orderByDesc('published_at')
+            ->take(5)
+            ->get();
+
+        $relatedNews = News::where('is_published', true)
+            ->where('category', $news->category)
+            ->where('id', '!=', $news->id)
+            ->orderByDesc('published_at')
+            ->take(3)
+            ->get();
+
+        return view('news-detail', compact('news', 'recentNews', 'relatedNews'));
     }
 
     /**
@@ -76,6 +99,18 @@ class PageController extends Controller
     public function pendaftaran()
     {
         return view('pendaftaran');
+    }
+
+    public function kemitraan(): View
+    {
+        $partnerships = Partnership::active()->ordered()->get();
+        return view('kemitraan', compact('partnerships'));
+    }
+
+    public function certificates(): View
+    {
+        $certificates = Certificate::active()->ordered()->get();
+        return view('certificates', compact('certificates'));
     }
 
     /**

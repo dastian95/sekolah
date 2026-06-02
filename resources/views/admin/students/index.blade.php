@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Kelola Pendaftaran Siswa Baru - Admin')
+@section('title', 'Kelola Data Pendaftar - Admin')
 
 @section('content')
 <!-- Page Header -->
 <section style="background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white; padding: 2rem 0;">
     <div class="container-lg">
-        <h1 style="font-size: 2rem; font-weight: 700; margin: 0;">Kelola Pendaftaran Siswa Baru</h1>
+        <h1 style="font-size: 2rem; font-weight: 700; margin: 0;">Kelola Data Pendaftar</h1>
     </div>
 </section>
 
@@ -19,12 +19,12 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" href="{{ route('admin.students.index') }}" id="siswa-baru-tab">
-                            <i class="fas fa-child me-2"></i> Siswa Baru
+                            <i class="fas fa-child me-2"></i> Pendaftar Baru
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" href="{{ route('admin.transfer-students.index') }}" id="siswa-pindahan-tab">
-                            <i class="fas fa-arrow-right-arrow-left me-2"></i> Siswa Pindahan
+                            <i class="fas fa-arrow-right-arrow-left me-2"></i> Pendaftar Pindahan
                         </a>
                     </li>
                 </ul>
@@ -55,10 +55,10 @@
                     <div class="col-md-4">
                         <select name="status" class="form-select">
                             <option value="">-- Semua Status --</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                            <option value="contacted" {{ request('status') == 'contacted' ? 'selected' : '' }}>Sedang Dihubungi</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Baru Daftar</option>
+                            <option value="contacted" {{ request('status') == 'contacted' ? 'selected' : '' }}>Sedang Diproses</option>
                             <option value="verified" {{ request('status') == 'verified' ? 'selected' : '' }}>Diterima</option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Tidak Diterima</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -78,7 +78,7 @@
                         <thead style="background-color: var(--dark-blue); color: white;">
                             <tr>
                                 <th>No. Registrasi</th>
-                                <th>Nama Siswa</th>
+                                <th>Nama Pendaftar</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Nama Orang Tua</th>
                                 <th>No. WhatsApp</th>
@@ -124,10 +124,10 @@
                                             @csrf
                                             @method('PATCH')
                                             <select name="status" class="form-select form-select-sm d-inline-block" style="width: auto; min-width: 120px;" onchange="this.form.submit()">
-                                                <option value="pending" {{ $student->status == 'pending' ? 'selected' : '' }}>Menunggu</option>
-                                                <option value="contacted" {{ $student->status == 'contacted' ? 'selected' : '' }}>Dihubungi</option>
+                                                <option value="pending" {{ $student->status == 'pending' ? 'selected' : '' }}>Baru Daftar</option>
+                                                <option value="contacted" {{ $student->status == 'contacted' ? 'selected' : '' }}>Sedang Diproses</option>
                                                 <option value="verified" {{ $student->status == 'verified' ? 'selected' : '' }}>Diterima</option>
-                                                <option value="rejected" {{ $student->status == 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                                                <option value="rejected" {{ $student->status == 'rejected' ? 'selected' : '' }}>Tidak Diterima</option>
                                             </select>
                                         </form>
                                     </td>
@@ -144,14 +144,14 @@
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header" style="background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white;">
-                                <h5 class="modal-title"><i class="fas fa-user-graduate me-2"></i>Detail Siswa - {{ $student->nama }}</h5>
+                                <h5 class="modal-title"><i class="fas fa-user-graduate me-2"></i>Detail Pendaftar - {{ $student->nama }}</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <!-- Data Siswa -->
+                                    <!-- Data Pendaftar -->
                                     <div class="col-md-6">
-                                        <h6 class="fw-bold text-primary mb-3"><i class="fas fa-id-card me-2"></i>Data Siswa</h6>
+                                        <h6 class="fw-bold text-primary mb-3"><i class="fas fa-id-card me-2"></i>Data Pendaftar</h6>
                                         <table class="table table-sm table-borderless">
                                             <tr><td class="text-muted" style="width:40%">No. Registrasi</td><td><strong>{{ $student->registration_number ?? '-' }}</strong></td></tr>
                                             <tr><td class="text-muted">NISN</td><td>{{ $student->nisn ?? '-' }}</td></tr>

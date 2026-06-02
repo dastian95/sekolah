@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Tentang Kami - Labitech Insan Mulia')
+@section('title', 'Tentang Kami - Laboratorium Islamic Technology-Labitech')
 
 @section('content')
 <!-- Page Header -->
 <section style="background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white; padding: 3rem 0;">
     <div class="container-lg">
         <h1 style="font-size: 2.5rem; font-weight: 700; margin: 0;">Tentang Kami</h1>
-        <p style="margin-top: 0.5rem; font-size: 1.1rem; opacity: 0.9;">Mengenal lebih dalam tentang SDIT Labitech Insan Mulia</p>
+        <p style="margin-top: 0.5rem; font-size: 1.1rem; opacity: 0.9;">Mengenal lebih dalam tentang Laboratorium Islamic Technology-Labitech</p>
     </div>
 </section>
 
@@ -16,20 +16,23 @@
     <div class="container-lg">
         <div class="row gap-5">
             <div class="col-lg-6">
-                <img src="https://via.placeholder.com/500x400?text=SDIT+Labitech+Insan+Mulia" alt="Sekolah SDIT Labitech Insan Mulia" style="width: 100%; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
+                <div style="width:100%; aspect-ratio:5/4; border-radius:12px; box-shadow:0 15px 40px rgba(0,0,0,0.1); background:linear-gradient(135deg,#e8f0fb,#dde8ff); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1rem;">
+                    <img src="{{ asset('images/logo.png') }}" style="height:100px; width:auto;" alt="logo Laboratorium Islamic Technology-Labitech">
+                    <p style="color:var(--dark-blue); margin:0; font-size:1rem; font-weight:700;">Laboratorium Islamic Technology-Labitech</p>
+                </div>
             </div>
             <div class="col-lg-6">
                 <h2 style="font-size: 2rem; color: var(--dark-blue); font-weight: 700; margin-bottom: 1.5rem;">
-                    SDIT Labitech Insan Mulia
+                    Laboratorium Islamic Technology-Labitech
                 </h2>
                 <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 1rem;">
-                    {{ $settings['about_description_1'] ?? 'SDIT Labitech Insan Mulia (Sekolah Dasar Islam Terpadu Labitech Insan Mulia) adalah lembaga pendidikan tingkat sekolah dasar yang berbasis Islam Terpadu. Kami berkomitmen untuk menjadi pusat pembelajaran yang menggabungkan kurikulum nasional dengan nilai-nilai Islam.' }}
+                    {{ $settings['about_description_1'] ?? 'Laboratorium Islamic Technology-Labitech (Sekolah Dasar Islam Terpadu Labitech Insan Mulia) adalah lembaga pendidikan tingkat sekolah dasar yang berbasis Islam Terpadu. Kami berkomitmen untuk menjadi pusat pembelajaran yang menggabungkan kurikulum nasional dengan nilai-nilai Islam.' }}
                 </p>
                 <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 1rem;">
                     {{ $settings['about_description_2'] ?? 'Dengan visi menjadi sekolah pilihan yang menghasilkan lulusan berkarakter, berprestasi, dan berkompetensi global, kami terus berinovasi dalam mengembangkan kurikulum dan metode pembelajaran.' }}
                 </p>
                 <p style="font-size: 1.1rem; line-height: 1.8; color: #555;">
-                    {{ $settings['about_description_3'] ?? 'SDIT Labitech Insan Mulia berlokasi di Kota Bekasi, Jawa Barat dan terus berkomitmen untuk menjangkau lebih banyak peserta didik yang ingin mendapatkan pendidikan berkualitas berbasis Islam.' }}
+                    {{ $settings['about_description_3'] ?? 'Laboratorium Islamic Technology-Labitech berlokasi di Kota Bekasi, Jawa Barat dan terus berkomitmen untuk menjangkau lebih banyak peserta didik yang ingin mendapatkan pendidikan berkualitas berbasis Islam.' }}
                 </p>
             </div>
         </div>

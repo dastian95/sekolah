@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RegistrationCredentialsMail;
+use App\Models\SiteSetting;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,14 @@ class PendaftaranController extends Controller
      */
     public function create()
     {
-        return view('pendaftaran');
+        if (!SiteSetting::isRegistrationOpen()) {
+            return view('pendaftaran', [
+                'registrationClosed' => true,
+                'closedMessage' => SiteSetting::getRegistrationClosedMessage(),
+            ]);
+        }
+
+        return view('pendaftaran', ['registrationClosed' => false]);
     }
 
     /**
@@ -26,6 +34,11 @@ class PendaftaranController extends Controller
      */
     public function store(Request $request)
     {
+        if (!SiteSetting::isRegistrationOpen()) {
+            return redirect()->route('pendaftaran')
+                ->with('error', SiteSetting::getRegistrationClosedMessage());
+        }
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'gender' => 'required|in:L,P',

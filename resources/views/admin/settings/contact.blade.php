@@ -63,7 +63,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Nama Sekolah</label>
-                                <input type="text" name="contact_school_name" class="form-control" value="{{ old('contact_school_name', $settings['contact_school_name'] ?? 'SDIT Labitech Insan Mulia') }}">
+                                <input type="text" name="contact_school_name" class="form-control" value="{{ old('contact_school_name', $settings['contact_school_name'] ?? 'Laboratorium Islamic Technology-Labitech') }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Jenjang Pendidikan</label>

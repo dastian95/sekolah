@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - SDIT Labitech Insan Mulia')
+@section('title', 'Login - Laboratorium Islamic Technology-Labitech')
 
 @section('content')
 <style>
@@ -736,8 +736,8 @@
             <div class="carousel-slides" id="carouselSlides">
                 <!-- Slide 1: Logo -->
                 <div class="carousel-slide active" data-slide="0">
-                    <img class="slide-logo" src="{{ asset('images/logo.png') }}" alt="Logo SDIT Labitech Insan Mulia" style="width: 120px; height: 120px; object-fit: contain; border-radius: 0; box-shadow: none;">
-                    <h3>SDIT Labitech Insan Mulia</h3>
+                    <img class="slide-logo" src="{{ asset('images/logo.png') }}" alt="logo Laboratorium Islamic Technology-Labitech" style="width: 120px; height: 120px; object-fit: contain; border-radius: 0; box-shadow: none;">
+                    <h3>Laboratorium Islamic Technology-Labitech</h3>
                     <p>Sistem Informasi Akademik<br>Sekolah Dasar Islam Terpadu</p>
                 </div>
                 <!-- Slide 2: Dashboard -->

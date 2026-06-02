@@ -36,6 +36,49 @@ class SiteSetting extends Model
     }
 
     /**
+     * Check if registration is currently open (toggle + period + capacity).
+     */
+    public static function isRegistrationOpen(): bool
+    {
+        // Manual toggle — if set to 0, always closed
+        if ((string) static::getValue('registration_open', '1') === '0') {
+            return false;
+        }
+
+        $now = now();
+
+        // Period check
+        $start = static::getValue('registration_start_date');
+        $end   = static::getValue('registration_end_date');
+
+        if ($start && $now->lt(\Carbon\Carbon::parse($start))) {
+            return false;
+        }
+        if ($end && $now->gt(\Carbon\Carbon::parse($end))) {
+            return false;
+        }
+
+        // Capacity check
+        $capacity = (int) static::getValue('registration_capacity', '100');
+        if ($capacity > 0 && \App\Models\Student::count() >= $capacity) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get registration closed message.
+     */
+    public static function getRegistrationClosedMessage(): string
+    {
+        return static::getValue(
+            'registration_closed_message',
+            'Pendaftaran peserta didik baru saat ini sedang ditutup. Silakan kunjungi kembali pada periode pendaftaran berikutnya atau hubungi pihak sekolah untuk informasi lebih lanjut.'
+        );
+    }
+
+    /**
      * Get all settings for a group as key => value array.
      */
     public static function getGroup(string $group): array

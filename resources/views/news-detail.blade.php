@@ -1,8 +1,14 @@
 @extends('layouts.app')
 
-@section('title', $news->title . ' - Labitech Insan Mulia')
+@section('title', $news->title . ' - Laboratorium Islamic Technology-Labitech')
 
 @section('content')
+@if(isset($isPreview) && $isPreview)
+<div style="background:#ff9800; color:white; text-align:center; padding:0.6rem; font-weight:700; font-size:0.9rem; position:sticky; top:0; z-index:999;">
+    <i class="fas fa-eye-slash me-2"></i>MODE PREVIEW — Artikel ini masih DRAFT dan tidak terlihat oleh publik.
+    <a href="{{ route('admin.news.index') }}" style="color:white; text-decoration:underline; margin-left:1rem;">← Kembali ke Admin</a>
+</div>
+@endif
 <!-- Page Header -->
 <section style="background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white; padding: 3rem 0;">
     <div class="container-lg">
@@ -20,18 +26,20 @@
             <div class="col-lg-8">
                 <!-- Featured Image -->
                 @if($news->featured_image)
-                    <img src="{{ asset('storage/' . $news->featured_image) }}" alt="{{ $news->title }}" 
+                    <img src="{{ asset('storage/' . $news->featured_image) }}" alt="{{ $news->title }}"
                          style="width: 100%; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
                 @else
-                    <img src="https://via.placeholder.com/800x400?text={{ urlencode($news->title) }}" alt="{{ $news->title }}" 
-                         style="width: 100%; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 15px 40px rgba(0,0,0,0.1);">
+                    <div style="width:100%; aspect-ratio:2/1; border-radius:12px; margin-bottom:2rem; box-shadow:0 15px 40px rgba(0,0,0,0.1); background:linear-gradient(135deg,#e8f0fb,#dde8ff); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem;">
+                        <img src="{{ asset('images/logo.png') }}" style="height:70px;width:auto;opacity:0.5;" alt="">
+                        <span style="font-size:0.85rem;color:#aaa;text-align:center;padding:0 2rem;">{{ Str::limit($news->title, 60) }}</span>
+                    </div>
                 @endif
 
                 <!-- Article Meta -->
                 <div style="display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 0.5rem; color: #999;">
                         <i class="fas fa-calendar"></i>
-                        <span>{{ $news->published_at->format('d F Y') }}</span>
+                        <span>{{ ($news->published_at ?? $news->created_at)->format('d F Y') }}</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 0.5rem; color: #999;">
                         <i class="fas fa-user"></i>
@@ -97,7 +105,7 @@
                                 </a>
                             </h5>
                             <div style="font-size: 0.85rem; color: #999;">
-                                <i class="fas fa-calendar-alt"></i> {{ $recent->published_at->format('d F Y') }}
+                                <i class="fas fa-calendar-alt"></i> {{ ($recent->published_at ?? $recent->created_at)->format('d F Y') }}
                             </div>
                         </div>
                     @endforeach
@@ -148,11 +156,14 @@
                         @if($related->featured_image)
                             <img src="{{ asset('storage/' . $related->featured_image) }}" alt="{{ $related->title }}">
                         @else
-                            <img src="https://via.placeholder.com/400x300?text={{ urlencode($related->title) }}" alt="{{ $related->title }}">
+                            <div style="width:100%; aspect-ratio:4/3; background:linear-gradient(135deg,#e8f0fb,#dde8ff); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.5rem;">
+                                <img src="{{ asset('images/logo.png') }}" style="height:45px;width:auto;opacity:0.5;" alt="">
+                                <span style="font-size:0.7rem;color:#aaa;text-align:center;padding:0 0.75rem;">{{ Str::limit($related->title, 35) }}</span>
+                            </div>
                         @endif
                         <div class="news-card-body">
                             <div class="news-card-title">{{ $related->title }}</div>
-                            <div class="news-card-date">{{ $related->published_at->format('d F Y') }}</div>
+                            <div class="news-card-date">{{ ($related->published_at ?? $related->created_at)->format('d F Y') }}</div>
                             <a href="{{ route('news.show', $related) }}" class="read-more">Baca Selengkapnya <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>

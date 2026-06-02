@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Branch extends Model
 {
-    protected $fillable = ['name', 'is_active', 'sort_order'];
+    protected $fillable = [
+        'name', 'slug', 'description', 'address', 'phone', 'email',
+        'color', 'logo', 'is_active', 'sort_order',
+    ];
 
     protected function casts(): array
     {

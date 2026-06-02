@@ -127,11 +127,10 @@
                                         @endif
                                     </form>
 
-                                    {{-- Edit Name --}}
-                                    <button type="button" class="btn btn-sm btn-outline-primary" title="Edit Nama"
-                                        data-bs-toggle="modal" data-bs-target="#editModal{{ $branch->id }}">
+                                    {{-- Edit Detail --}}
+                                    <a href="{{ route('admin.branches.edit', $branch) }}" class="btn btn-sm btn-outline-primary" title="Edit Detail & Warna">
                                         <i class="fas fa-edit"></i>
-                                    </button>
+                                    </a>
 
                                     {{-- Delete --}}
                                     <form method="POST" action="{{ route('admin.branches.destroy', $branch) }}" class="d-inline">

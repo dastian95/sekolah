@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Paragraf 1</label>
-                                <textarea name="about_description_1" class="form-control" rows="3">{{ old('about_description_1', $settings['about_description_1'] ?? 'SDIT Labitech Insan Mulia (Sekolah Dasar Islam Terpadu Labitech Insan Mulia) adalah lembaga pendidikan tingkat sekolah dasar yang berbasis Islam Terpadu. Kami berkomitmen untuk menjadi pusat pembelajaran yang menggabungkan kurikulum nasional dengan nilai-nilai Islam.') }}</textarea>
+                                <textarea name="about_description_1" class="form-control" rows="3">{{ old('about_description_1', $settings['about_description_1'] ?? 'Laboratorium Islamic Technology-Labitech (Sekolah Dasar Islam Terpadu Labitech Insan Mulia) adalah lembaga pendidikan tingkat sekolah dasar yang berbasis Islam Terpadu. Kami berkomitmen untuk menjadi pusat pembelajaran yang menggabungkan kurikulum nasional dengan nilai-nilai Islam.') }}</textarea>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Paragraf 2</label>
@@ -50,7 +50,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Paragraf 3</label>
-                                <textarea name="about_description_3" class="form-control" rows="3">{{ old('about_description_3', $settings['about_description_3'] ?? 'SDIT Labitech Insan Mulia berlokasi di Kota Bekasi, Jawa Barat dan terus berkomitmen untuk menjangkau lebih banyak peserta didik yang ingin mendapatkan pendidikan berkualitas berbasis Islam.') }}</textarea>
+                                <textarea name="about_description_3" class="form-control" rows="3">{{ old('about_description_3', $settings['about_description_3'] ?? 'Laboratorium Islamic Technology-Labitech berlokasi di Kota Bekasi, Jawa Barat dan terus berkomitmen untuk menjangkau lebih banyak peserta didik yang ingin mendapatkan pendidikan berkualitas berbasis Islam.') }}</textarea>
                             </div>
                         </div>
                     </div>

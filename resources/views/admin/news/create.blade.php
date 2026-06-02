@@ -77,19 +77,14 @@
                                 <input type="file" name="featured_image" id="featured_image" class="form-control" accept="image/*">
                             </div>
 
-                            <div class="mb-4">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" name="is_published" id="is_published" value="1" {{ old('is_published', true) ? 'checked' : '' }}>
-                                    <label class="form-check-label fw-bold" for="is_published">Langsung Publikasi</label>
-                                </div>
-                                <small class="text-muted">Jika tidak dicentang, berita akan disimpan sebagai draft.</small>
-                            </div>
-
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-save me-2"></i> Simpan Berita
+                            <div class="d-flex gap-2 mt-4">
+                                <button type="submit" name="action" value="publish" class="btn btn-success btn-lg">
+                                    <i class="fas fa-globe me-2"></i> Publikasikan
                                 </button>
-                                <a href="{{ route('admin.news.index') }}" class="btn btn-outline-secondary btn-lg">Batal</a>
+                                <button type="submit" name="action" value="draft" class="btn btn-outline-secondary btn-lg">
+                                    <i class="fas fa-save me-2"></i> Simpan Draft
+                                </button>
+                                <a href="{{ route('admin.news.index') }}" class="btn btn-outline-danger btn-lg ms-auto">Batal</a>
                             </div>
                         </form>
 

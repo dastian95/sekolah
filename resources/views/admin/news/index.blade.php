@@ -101,15 +101,27 @@
                                     </td>
                                     <td>{{ $item->created_at->format('d M Y') }}</td>
                                     <td>
-                                        <a href="{{ route('news.show', $item) }}" class="btn btn-sm btn-outline-primary" target="_blank" title="Lihat">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('admin.news.edit', $item->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                        {{-- Toggle Publish --}}
+                                        <form method="POST" action="{{ route('admin.news.toggle', $item->id) }}" class="d-inline">
+                                            @csrf @method('PATCH')
+                                            <button type="submit" class="btn btn-sm {{ $item->is_published ? 'btn-warning' : 'btn-success' }}" title="{{ $item->is_published ? 'Jadikan Draft' : 'Publikasikan' }}">
+                                                <i class="fas {{ $item->is_published ? 'fa-eye-slash' : 'fa-globe' }}"></i>
+                                            </button>
+                                        </form>
+                                        @if($item->is_published)
+                                            <a href="{{ route('news.show', $item) }}" class="btn btn-sm btn-outline-primary" target="_blank" title="Lihat Publik">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        @else
+                                            <a href="{{ route('admin.news.preview', $item->id) }}" class="btn btn-sm btn-outline-secondary" target="_blank" title="Preview Draft">
+                                                <i class="fas fa-eye-slash"></i>
+                                            </a>
+                                        @endif
+                                        <a href="{{ route('admin.news.edit', $item->id) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <form method="POST" action="{{ route('admin.news.destroy', $item->id) }}" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
-                                            @csrf
-                                            @method('DELETE')
+                                            @csrf @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
                                                 <i class="fas fa-trash"></i>
                                             </button>

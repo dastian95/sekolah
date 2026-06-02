@@ -28,3 +28,11 @@ storage/framework/views/*
 storage/framework/cache/data/*
 storage/logs/*.log
 Thumbs.db
+
+# File upload dari admin (foto, video, PDF) — tidak di-commit ke git
+/storage/app/public/settings/*
+/storage/app/public/videos/*
+/storage/app/public/news/*
+/storage/app/public/branches/*
+/storage/app/public/partnerships/*
+/storage/app/public/certificates/*

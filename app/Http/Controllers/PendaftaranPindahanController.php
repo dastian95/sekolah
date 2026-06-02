@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SiteSetting;
 use App\Models\TransferStudent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,14 @@ class PendaftaranPindahanController extends Controller
      */
     public function create()
     {
-        return view('pendaftaran-pindahan');
+        if (!SiteSetting::isRegistrationOpen()) {
+            return view('pendaftaran-pindahan', [
+                'registrationClosed' => true,
+                'closedMessage' => SiteSetting::getRegistrationClosedMessage(),
+            ]);
+        }
+
+        return view('pendaftaran-pindahan', ['registrationClosed' => false]);
     }
 
     /**
@@ -22,6 +30,11 @@ class PendaftaranPindahanController extends Controller
      */
     public function store(Request $request)
     {
+        if (!SiteSetting::isRegistrationOpen()) {
+            return redirect()->route('pendaftaran-pindahan')
+                ->with('error', SiteSetting::getRegistrationClosedMessage());
+        }
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'gender' => 'required|in:L,P',

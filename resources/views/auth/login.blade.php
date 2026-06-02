@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login Administrator - Labitech Insan Mulia')
+@section('title', 'Login Administrator - Laboratorium Islamic Technology-Labitech')
 
 @section('extra-css')
 <style>
@@ -81,8 +81,8 @@
                 <div class="row g-0">
                     <!-- Kolom Branding Kiri -->
                     <div class="col-lg-6 d-none d-lg-block login-image-side">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo Labitech Insan Mulia">
-                        <h4 class="fw-bold text-white"><i class="fas fa-school me-2"></i>Labitech Insan Mulia</h4>
+                        <img src="{{ asset('images/logo.png') }}" alt="logo Laboratorium Islamic Technology-Labitech">
+                        <h4 class="fw-bold text-white"><i class="fas fa-school me-2"></i>Laboratorium Islamic Technology-Labitech</h4>
                         <p class="text-white-50 small mt-2"><i class="fas fa-database me-2"></i>Portal Administrator untuk manajemen data sekolah.</p>
                     </div>
 

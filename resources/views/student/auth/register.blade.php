@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Akun Siswa - SDIT Labitech Insan Mulia')
+@section('title', 'Daftar Akun Siswa - Laboratorium Islamic Technology-Labitech')
 
 @section('content')
 <!-- Page Header -->

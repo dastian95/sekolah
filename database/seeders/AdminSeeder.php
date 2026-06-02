@@ -9,32 +9,29 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
+        // Hapus semua akun admin lama
+        User::truncate();
+
         $admins = [
             [
-                'name' => 'labitech', // Username admin utama
-                'email' => 'admin@labitech.sch.id',
-                'password' => 'secret123',
+                'name'     => 'lt.admin',
+                'email'    => 'admin@labitech.sch.id',
+                'password' => 'Labitech@2026!',
             ],
             [
-                'name' => 'kepalasekolah',
-                'email' => 'kepsek@labitech.sch.id',
-                'password' => 'labitech2026',
+                'name'     => 'lt.kepsek',
+                'email'    => 'kepsek@labitech.sch.id',
+                'password' => 'KepSek@2026!',
             ],
             [
-                'name' => 'tatausaha',
-                'email' => 'tu@labitech.sch.id',
-                'password' => 'admin12345',
+                'name'     => 'lt.tatausaha',
+                'email'    => 'tu@labitech.sch.id',
+                'password' => 'TataUsaha@2026!',
             ],
         ];
 
         foreach ($admins as $admin) {
-            User::updateOrCreate(
-                ['email' => $admin['email']],
-                [
-                    'name' => $admin['name'],
-                    'password' => $admin['password'],
-                ]
-            );
+            User::create($admin);
         }
     }
 }

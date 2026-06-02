@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Dashboard') - Labitech Insan Mulia</title>
+    <title>@yield('title', 'Admin Dashboard') - Laboratorium Islamic Technology-Labitech</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -411,16 +411,35 @@
             .social-icons { justify-content: center; }
             .contact-info { justify-content: center; }
         }
+
+        /* ===== PAGE TRANSITION ===== */
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        main.admin-main {
+            animation: pageIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Nav tabs styling override for smooth look */
+        .nav-tabs .nav-link {
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        /* ===== TOAST ===== */
+        .toast { min-width: 300px; font-size: 0.9rem; }
     </style>
     @yield('extra-css')
 </head>
 <body>
+    {{-- Wrapper sticky agar kedua navbar (website + admin bar) ikut saat scroll --}}
+    <div class="sticky-top" style="z-index: 1030;">
     {{-- ===== NAVBAR 1: Website Utama (sama persis seperti website publik) ===== --}}
-    <nav class="navbar navbar-expand-lg navbar-website sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-website">
         <div class="container-lg">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo INSAN MULIA">
-                <span>Labitech Insan Mulia</span>
+                <img src="{{ asset('images/logo.png') }}" alt="logo Laboratorium Islamic Technology-Labitech">
+                <span>Laboratorium Islamic Technology-Labitech</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#websiteNav">
                 <span class="navbar-toggler-icon"></span>
@@ -473,7 +492,7 @@
                 </li>
                 <li>
                     <a class="admin-nav-link {{ request()->routeIs('admin.students.*') || request()->routeIs('admin.transfer-students.*') ? 'active' : '' }}" href="{{ route('admin.students.index') }}">
-                        <i class="fas fa-users"></i> Siswa
+                        <i class="fas fa-users"></i> Pendaftar
                     </a>
                 </li>
                 <li>
@@ -486,11 +505,23 @@
                         <i class="fas fa-envelope"></i> Pesan
                     </a>
                 </li>
+                <li>
+                    <a class="admin-nav-link {{ request()->routeIs('admin.partnerships.*') ? 'active' : '' }}" href="{{ route('admin.partnerships.index') }}">
+                        <i class="fas fa-handshake"></i> Kemitraan
+                    </a>
+                </li>
+                <li>
+                    <a class="admin-nav-link {{ request()->routeIs('admin.certificates.*') ? 'active' : '' }}" href="{{ route('admin.certificates.index') }}">
+                        <i class="fas fa-certificate"></i> Certificates
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="admin-nav-link dropdown-toggle {{ request()->routeIs('admin.settings.*') || request()->routeIs('admin.branches.*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-cog"></i> Pengaturan
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item {{ request()->routeIs('admin.settings.registration') ? 'active' : '' }}" href="{{ route('admin.settings.registration') }}"><i class="fas fa-clipboard-list me-2"></i> Pendaftaran</a></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item {{ request()->routeIs('admin.settings.homepage') ? 'active' : '' }}" href="{{ route('admin.settings.homepage') }}"><i class="fas fa-home me-2"></i> Halaman Utama</a></li>
                         <li><a class="dropdown-item {{ request()->routeIs('admin.branches.*') ? 'active' : '' }}" href="{{ route('admin.branches.index') }}"><i class="fas fa-map-marker-alt me-2"></i> Cabang Sekolah</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -513,6 +544,7 @@
             </div>
         </div>
     </nav>
+    </div>{{-- end sticky-top wrapper --}}
 
     <!-- Main Content -->
     <main class="admin-main">
@@ -533,7 +565,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 footer-col mb-4">
                         <h5><i class="fas fa-graduation-cap" style="color: var(--secondary-yellow); margin-right: 0.5rem;"></i>LABITECH</h5>
-                        <p style="margin-bottom: 0.4rem; font-size: 0.92rem; font-weight: 500;">SDIT Labitech Insan Mulia</p>
+                        <p style="margin-bottom: 0.4rem; font-size: 0.92rem; font-weight: 500;">Laboratorium Islamic Technology-Labitech</p>
                         <p style="margin-bottom: 1rem; font-size: 0.82rem; color: rgba(255,255,255,0.6);">SD (Sekolah Dasar)</p>
                         <div class="social-icons">
                             <a href="#" class="sc-facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -561,7 +593,7 @@
                         <h5>Menu Admin</h5>
                         <ul class="footer-links">
                             <li><a href="{{ route('admin.dashboard') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Dashboard</a></li>
-                            <li><a href="{{ route('admin.students.index') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Kelola Siswa</a></li>
+                            <li><a href="{{ route('admin.students.index') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Kelola Pendaftar</a></li>
                             <li><a href="{{ route('admin.news.index') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Kelola Berita</a></li>
                             <li><a href="{{ route('admin.messages.index') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Pesan Masuk</a></li>
                             <li><a href="{{ url('/') }}" target="_blank"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Lihat Website</a></li>
@@ -569,7 +601,7 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p style="margin: 0;">&copy; {{ date('Y') }} <a href="{{ route('home') }}">Labitech Insan Mulia</a>. Semua hak dilindungi.</p>
+                    <p style="margin: 0;">&copy; {{ date('Y') }} <a href="{{ route('home') }}">Laboratorium Islamic Technology-Labitech</a>. Semua hak dilindungi.</p>
                 </div>
             </div>
         </div>
@@ -577,6 +609,55 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Toast Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999;">
+        @php
+            $toasts = [
+                'success' => ['bg-success',          'fa-check-circle'],
+                'error'   => ['bg-danger',            'fa-times-circle'],
+                'warning' => ['bg-warning text-dark', 'fa-exclamation-triangle'],
+                'info'    => ['bg-info text-dark',    'fa-info-circle'],
+            ];
+        @endphp
+        @foreach($toasts as $type => [$cls, $icon])
+            @if(session($type))
+            <div class="toast align-items-center text-white {{ $cls }} border-0 rounded-3 shadow" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body fw-semibold">
+                        <i class="fas {{ $icon }} me-2"></i>{{ session($type) }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+            @endif
+        @endforeach
+    </div>
+    <script>
+        document.querySelectorAll('.toast').forEach(function(el) {
+            new bootstrap.Toast(el, { delay: 5000 }).show();
+        });
+
+        // ===== Tab Transition (slide up exit → slide up enter) =====
+        document.querySelectorAll('.nav-tabs .nav-link:not(.active)').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (!href || href === '#') return;
+                e.preventDefault();
+
+                const main = document.querySelector('main.admin-main');
+                if (!main) { window.location.href = href; return; }
+
+                // Slide up + fade out
+                main.style.transition  = 'opacity 0.2s ease, transform 0.2s ease';
+                main.style.opacity     = '0';
+                main.style.transform   = 'translateY(-30px)';
+
+                setTimeout(function() { window.location.href = href; }, 210);
+            });
+        });
+    </script>
+
     @yield('extra-js')
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Labitech Insan Mulia - Labitech.sch.id')</title>
+    <title>@yield('title', 'Laboratorium Islamic Technology-Labitech')</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -33,7 +33,7 @@
 
         /* Offset for sticky navbar */
         section[id^="section-"] {
-            scroll-margin-top: 70px;
+            scroll-margin-top: 72px;
         }
         
         * {
@@ -49,99 +49,172 @@
             color: inherit;
         }
         
-        /* Navbar Styles */
+        /* ===== TOPBAR ===== */
+        .navbar-topbar {
+            background: var(--dark-blue);
+            padding: 0.4rem 0;
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .navbar-topbar a {
+            color: rgba(255,255,255,0.75);
+            transition: color 0.2s;
+        }
+
+        .navbar-topbar a:hover {
+            color: var(--secondary-yellow);
+        }
+
+        .topbar-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            font-size: 0.72rem;
+            transition: all 0.2s;
+        }
+
+        .topbar-social a:hover {
+            background: var(--secondary-yellow);
+            color: var(--dark-blue) !important;
+        }
+
+        /* ===== MAIN NAVBAR ===== */
         .navbar-custom {
             background-color: var(--dark-blue);
-            padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            /* Shadow dihapus di sini, akan ditambahkan via JS saat scroll */
+            padding: 0.6rem 0;
+            box-shadow: none;
+            transition: box-shadow 0.3s ease;
         }
-        
+
+        .navbar-custom.scrolled {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+
         .navbar-custom .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: white !important;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            white-space: nowrap;
         }
-        
+
         .navbar-custom .navbar-brand img {
-            height: 40px;
+            height: 38px;
             width: auto;
         }
-        
-        .navbar-custom .navbar-brand span {
-            font-size: 1.1rem;
+
+        .navbar-brand-text .brand-main {
+            display: block;
+            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            color: white;
+            line-height: 1.25;
+            letter-spacing: 0.2px;
         }
 
-        /* Class tambahan saat navbar di-scroll */
-        .navbar-custom.scrolled {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        .navbar-brand-text .brand-sub {
+            display: block;
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 400;
+            line-height: 1;
         }
-        
+
         .navbar-custom .nav-link {
-            color: white !important;
-            margin: 0 0.25rem;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0.75rem !important;
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.8rem !important;
+            margin: 0 0.05rem;
             position: relative;
-        }
-        
-        .navbar-custom .nav-link:hover {
-            color: var(--secondary-yellow) !important;
+            transition: color 0.2s;
         }
 
-        /* Pastikan ikon berubah menjadi kuning saat menu di-hover */
-        .navbar-custom .nav-link:hover i {
-            color: var(--secondary-yellow) !important;
-        }
-        
-        .navbar-custom .nav-link.active {
-            color: var(--secondary-yellow) !important;
-            font-weight: 600;
-        }
-        
-        .navbar-custom .nav-link.active::after {
+        .navbar-custom .nav-link::before {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: 2px;
             left: 50%;
             transform: translateX(-50%);
-            width: 70%;
-            height: 3px;
-            background-color: var(--secondary-yellow);
+            width: 0;
+            height: 2px;
+            background: var(--secondary-yellow);
             border-radius: 2px;
+            transition: width 0.25s ease;
         }
-        
-        /* Custom Login Button */
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .nav-link.active {
+            color: var(--secondary-yellow) !important;
+        }
+
+        .navbar-custom .nav-link:hover::before,
+        .navbar-custom .nav-link.active::before {
+            width: 60%;
+        }
+
+        .navbar-custom .nav-link.active {
+            font-weight: 600;
+        }
+
+        /* Dropdown */
+        .navbar-custom .dropdown-menu {
+            border: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            background: var(--dark-blue);
+        }
+
+        .navbar-custom .dropdown-item {
+            border-radius: 7px;
+            padding: 0.5rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.85);
+            transition: all 0.2s;
+        }
+
+        .navbar-custom .dropdown-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--secondary-yellow);
+            padding-left: 1.25rem;
+        }
+
+        .navbar-custom .dropdown-item i {
+            color: var(--secondary-yellow) !important;
+        }
+
+        /* CTA Button */
         .navbar-custom .btn-login {
-            background-color: var(--secondary-yellow) !important;
+            background-color: var(--secondary-yellow);
             color: var(--dark-blue) !important;
             border-radius: 50px;
-            padding: 0.45rem 1.3rem;
+            padding: 0.5rem 1.4rem;
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.87rem;
             transition: all 0.3s ease;
             border: none;
             white-space: nowrap;
             display: inline-block;
-            text-decoration: none;
-            position: relative;
-            z-index: 10;
-            cursor: pointer;
-            pointer-events: auto;
         }
 
         .navbar-custom .btn-login:hover {
-            background-color: #fff !important;
+            background-color: white;
             color: var(--dark-blue) !important;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+        }
+
+        /* Toggler */
+        .navbar-custom .navbar-toggler {
+            border-color: rgba(255,255,255,0.3);
+            padding: 0.35rem 0.6rem;
         }
         
         /* Hero Section */
@@ -739,62 +812,74 @@
         }
 
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-10px); }
         }
+
+        /* ===== PAGE TRANSITION ===== */
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        main { animation: pageIn 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        /* ===== TOAST ===== */
+        .toast { min-width: 300px; font-size: 0.9rem; }
     </style>
     
     @yield('extra-css')
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top" id="mainNavbar">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo">
-                <span>SDIT Labitech</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link nav-scroll" data-section="section-home" href="{{ url('/#section-home') }}">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-scroll" data-section="section-tentang" href="{{ url('/#section-tentang') }}">Tentang Kami</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-scroll" data-section="section-berita" href="{{ url('/#section-berita') }}">Berita</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-scroll" data-section="section-kontak" href="{{ url('/#section-kontak') }}">Kontak</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="pendaftaranDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Pendaftaran
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="pendaftaranDropdown">
-                            <li><a class="dropdown-item" href="{{ route('pendaftaran') }}">Siswa Baru</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ route('pendaftaran-pindahan') }}">Siswa Pindahan</a></li>
-                        </ul>
-                    </li>
+    <div class="fixed-top" id="mainNavbarWrapper">
 
-                    <li class="nav-item ms-lg-2">
-                        <a href="{{ route('unified.login') }}" class="btn btn-login">
-                            <i class="fas fa-sign-in-alt me-1"></i> Login
-                        </a>
-                    </li>
-                </ul>
+        <!-- Main Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-custom" id="mainNavbar">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{ asset('images/logo2.1.png') }}" alt="logo Labitech">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link nav-scroll" data-section="section-home" href="{{ url('/#section-home') }}">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-scroll" data-section="section-tentang" href="{{ url('/#section-tentang') }}">Tentang Kami</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-scroll" data-section="section-berita" href="{{ url('/#section-berita') }}">Berita</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-scroll" data-section="section-kontak" href="{{ url('/#section-kontak') }}">Kontak</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('kemitraan') ? 'active' : '' }}" href="{{ route('kemitraan') }}">Kemitraan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('certificates') ? 'active' : '' }}" href="{{ route('certificates') }}">Certificates</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('pendaftaran') ? 'active' : '' }}" href="{{ route('pendaftaran') }}">
+                                <i class="fas fa-file-alt me-1" style="font-size:0.8rem;opacity:0.7;"></i>Pendaftaran
+                            </a>
+                        </li>
+
+                        @auth
+                            <li class="nav-item ms-lg-2">
+                                <a href="{{ route('admin.dashboard') }}" class="btn btn-login">
+                                    <i class="fas fa-user-shield me-1"></i> Admin Panel
+                                </a>
+                            </li>
+                        @endauth
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div><!-- end #mainNavbarWrapper -->
 
     <!-- Main Content -->
     <main>
@@ -820,7 +905,7 @@
                         <h5>
                             <i class="fas fa-graduation-cap" style="color: var(--secondary-yellow); margin-right: 0.5rem;"></i>LABITECH
                         </h5>
-                        <p style="margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 500;">SDIT Labitech Insan Mulia</p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 500;">SD Laboratorium Islamic Technology-Labitech</p>
                         <p style="margin-bottom: 1.25rem; font-size: 0.85rem; color: rgba(255,255,255,0.6);">SD (Sekolah Dasar)</p>
                         <div class="subscribe-section">
                             <label style="display: block; margin-bottom: 0.6rem; font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.8);">
@@ -877,7 +962,7 @@
 
                 <!-- Footer Bottom -->
                 <div class="footer-bottom">
-                    <p style="margin: 0;">&copy; {{ date('Y') }} <a href="{{ route('home') }}">Labitech Insan Mulia</a>. Semua hak dilindungi.</p>
+                    <p style="margin: 0;">&copy; {{ date('Y') }} <a href="{{ route('home') }}">Laboratorium Islamic Technology-Labitech</a>. Semua hak dilindungi.</p>
                 </div>
             </div>
         </div>
@@ -885,118 +970,166 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- SPA-like Smooth Scroll Navigation Script -->
+
+    <!-- Global Toast Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999;">
+        @php
+            $toasts = [
+                'success' => ['bg-success',          'fa-check-circle'],
+                'error'   => ['bg-danger',            'fa-times-circle'],
+                'warning' => ['bg-warning text-dark', 'fa-exclamation-triangle'],
+                'info'    => ['bg-info text-dark',    'fa-info-circle'],
+            ];
+        @endphp
+        @foreach($toasts as $type => [$cls, $icon])
+            @if(session($type))
+            <div class="toast align-items-center text-white {{ $cls }} border-0 rounded-3 shadow" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body fw-semibold">
+                        <i class="fas {{ $icon }} me-2"></i>{{ session($type) }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+            @endif
+        @endforeach
+    </div>
+    <script>
+        document.querySelectorAll('.toast').forEach(function(el) {
+            new bootstrap.Toast(el, { delay: 5000 }).show();
+        });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const navScrollLinks = document.querySelectorAll('.nav-scroll');
-            const sections = document.querySelectorAll('section[id^="section-"]');
-            const currentPath = window.location.pathname;
-            const isHomePage = (currentPath === '/' || currentPath === '' || currentPath === '/index');
+            const sections       = document.querySelectorAll('section[id^="section-"]');
+            const isHomePage     = {{ request()->routeIs('home') ? 'true' : 'false' }};
 
-            // ===== SMOOTH SCROLL CLICK HANDLER =====
-            navScrollLinks.forEach(link => {
+            // ===== CUSTOM SMOOTH SCROLL (easeInOutCubic) =====
+            function smoothScrollTo(target, duration) {
+                duration = duration || 700;
+                const navH    = document.getElementById('mainNavbarWrapper')?.offsetHeight || 72;
+                const toY     = target.getBoundingClientRect().top + window.scrollY - navH;
+                const fromY   = window.scrollY;
+                const dist    = toY - fromY;
+                let   start   = null;
+
+                function ease(t) {
+                    return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+                }
+                function step(ts) {
+                    if (!start) start = ts;
+                    const p = Math.min((ts - start) / duration, 1);
+                    window.scrollTo(0, fromY + dist * ease(p));
+                    if (p < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+
+            // ===== SECTION REVEAL (slide-up on scroll) =====
+            if (isHomePage) {
+                const revealSections = document.querySelectorAll('section[id^="section-"]:not(#section-home)');
+                revealSections.forEach(function(s) {
+                    s.style.opacity   = '0';
+                    s.style.transform = 'translateY(36px)';
+                    s.style.transition = 'opacity 0.55s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+                });
+
+                const revealObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(e) {
+                        if (e.isIntersecting) {
+                            e.target.style.opacity   = '1';
+                            e.target.style.transform = 'translateY(0)';
+                            revealObs.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.07, rootMargin: '-20px 0px' });
+
+                revealSections.forEach(function(s) { revealObs.observe(s); });
+            }
+
+            // ===== NAV-SCROLL CLICK HANDLER =====
+            navScrollLinks.forEach(function(link) {
                 link.addEventListener('click', function(e) {
-                    const sectionId = this.getAttribute('data-section');
+                    const sectionId     = this.getAttribute('data-section');
                     const targetSection = document.getElementById(sectionId);
 
-                    // Jika berada di homepage dan section ada, scroll tanpa reload
                     if (isHomePage && targetSection) {
                         e.preventDefault();
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-                        // Update URL hash tanpa reload
+                        smoothScrollTo(targetSection, 700);
                         history.pushState(null, null, '#' + sectionId);
 
-                        // Update active state
-                        navScrollLinks.forEach(l => l.classList.remove('active'));
+                        navScrollLinks.forEach(function(l) { l.classList.remove('active'); });
                         this.classList.add('active');
 
-                        // Close mobile navbar if open
                         const navbarCollapse = document.getElementById('navbarNav');
-                        if (navbarCollapse.classList.contains('show')) {
+                        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                             const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
                             if (bsCollapse) bsCollapse.hide();
                         }
                     }
-                    // Jika bukan homepage, biarkan navigasi normal (ke homepage + anchor)
                 });
             });
 
-            // ===== INTERSECTION OBSERVER - Track visible section =====
+            // ===== INTERSECTION OBSERVER - active nav tracking =====
             if (isHomePage && sections.length > 0) {
-                const observerOptions = {
-                    root: null,
-                    rootMargin: '-80px 0px -50% 0px',
-                    threshold: 0
-                };
-
-                const observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(entry => {
+                const activeObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
                         if (entry.isIntersecting) {
-                            const sectionId = entry.target.getAttribute('id');
-                            
-                            // Update active nav link
-                            navScrollLinks.forEach(link => {
+                            const id = entry.target.getAttribute('id');
+                            navScrollLinks.forEach(function(link) {
                                 link.classList.remove('active');
-                                if (link.getAttribute('data-section') === sectionId) {
-                                    link.classList.add('active');
-                                }
+                                if (link.getAttribute('data-section') === id) link.classList.add('active');
                             });
                         }
                     });
-                }, observerOptions);
+                }, { root: null, rootMargin: '-80px 0px -50% 0px', threshold: 0 });
 
-                sections.forEach(section => observer.observe(section));
+                sections.forEach(function(s) { activeObs.observe(s); });
 
-                // Set initial active state based on hash or default to home
                 const hash = window.location.hash.replace('#', '');
                 if (hash) {
-                    const targetSection = document.getElementById(hash);
-                    if (targetSection) {
-                        setTimeout(() => {
-                            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100);
-                    }
+                    const t = document.getElementById(hash);
+                    if (t) setTimeout(function() { smoothScrollTo(t, 700); }, 120);
                 } else {
-                    // Default: set Beranda as active
-                    navScrollLinks.forEach(link => {
-                        if (link.getAttribute('data-section') === 'section-home') {
-                            link.classList.add('active');
-                        }
+                    navScrollLinks.forEach(function(link) {
+                        if (link.getAttribute('data-section') === 'section-home') link.classList.add('active');
                     });
-                }
-            } else if (!isHomePage) {
-                // Non-homepage: highlight based on current path
-                const pathMap = {
-                    '/tentang-kami': 'section-tentang',
-                    '/berita': 'section-berita',
-                    '/kontak': 'section-kontak',
-                    '/pendaftaran': null,
-                    '/pendaftaran-pindahan': null
-                };
-                
-                for (const [path, section] of Object.entries(pathMap)) {
-                    if (currentPath.includes(path) && section) {
-                        navScrollLinks.forEach(link => {
-                            if (link.getAttribute('data-section') === section) {
-                                link.classList.add('active');
-                            }
-                        });
-                        break;
-                    }
                 }
             }
 
-            // ===== NAVBAR SCROLL SHADOW EFFECT =====
+            // ===== CROSS-PAGE EXIT ANIMATION =====
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a[href]');
+                if (!link) return;
+                const href = link.getAttribute('href');
+                if (!href) return;
+
+                // Skip: anchors, external, special protocols, blank target, nav-scroll, ctrl/cmd+click
+                if (href.startsWith('#') || href.startsWith('javascript') ||
+                    href.startsWith('mailto') || href.startsWith('tel') ||
+                    link.target === '_blank' || link.classList.contains('nav-scroll') ||
+                    e.ctrlKey || e.metaKey || e.shiftKey) return;
+
+                // Skip external domains
+                if (href.startsWith('http') && !href.includes(location.hostname)) return;
+
+                e.preventDefault();
+                const main = document.querySelector('main');
+                if (main) {
+                    main.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+                    main.style.opacity    = '0';
+                    main.style.transform  = 'translateY(-24px)';
+                }
+                setTimeout(function() { window.location.href = href; }, 200);
+            });
+
+            // ===== NAVBAR SCROLL SHADOW =====
             window.addEventListener('scroll', function() {
                 const navbar = document.querySelector('.navbar-custom');
                 if (navbar) {
-                    if (window.scrollY > 10) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
-                    }
+                    navbar.classList.toggle('scrolled', window.scrollY > 10);
                 }
             });
         });

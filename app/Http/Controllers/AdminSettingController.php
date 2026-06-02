@@ -88,16 +88,74 @@ class AdminSettingController extends Controller
      */
     public function updateHomepage(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'homepage_banner_subtitle' => 'nullable|string|max:255',
             'homepage_banner_title'    => 'nullable|string|max:255',
             'homepage_banner_link'     => 'nullable|string|max:500',
+            'homepage_video_url'       => 'nullable|url|max:500',
+            'homepage_hero_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'homepage_about_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'homepage_video_file'      => 'nullable|mimes:mp4,webm,ogg|max:102400',
         ]);
 
-        foreach ($validated as $key => $value) {
-            SiteSetting::setValue($key, $value, 'homepage');
+        $textFields = ['homepage_banner_subtitle', 'homepage_banner_title', 'homepage_banner_link', 'homepage_video_url'];
+        foreach ($textFields as $key) {
+            SiteSetting::setValue($key, $request->input($key), 'homepage');
+        }
+
+        foreach (['homepage_hero_image', 'homepage_about_image'] as $key) {
+            if ($request->hasFile($key)) {
+                $old = SiteSetting::getValue($key);
+                if ($old) \Illuminate\Support\Facades\Storage::disk('public')->delete($old);
+                $path = $request->file($key)->store('settings', 'public');
+                SiteSetting::setValue($key, $path, 'homepage');
+            }
+        }
+
+        if ($request->hasFile('homepage_video_file')) {
+            $old = SiteSetting::getValue('homepage_video_file');
+            if ($old) \Illuminate\Support\Facades\Storage::disk('public')->delete($old);
+            $path = $request->file('homepage_video_file')->store('videos', 'public');
+            SiteSetting::setValue('homepage_video_file', $path, 'homepage');
         }
 
         return redirect()->route('admin.settings.homepage')->with('success', 'Pengaturan halaman utama berhasil diperbarui!');
+    }
+
+    /**
+     * Show Registration settings form.
+     */
+    public function editRegistration()
+    {
+        $settings = SiteSetting::getGroup('registration');
+        $totalPendaftar = \App\Models\Student::count();
+
+        return view('admin.settings.registration', compact('settings', 'totalPendaftar'));
+    }
+
+    /**
+     * Update Registration settings.
+     */
+    public function updateRegistration(Request $request)
+    {
+        $request->validate([
+            'registration_open'              => 'nullable|in:0,1',
+            'registration_start_date'        => 'nullable|date',
+            'registration_end_date'          => 'nullable|date|after_or_equal:registration_start_date',
+            'registration_capacity'          => 'required|integer|min:1|max:10000',
+            'registration_closed_message'    => 'nullable|string|max:500',
+            'registration_google_form_baru'  => 'nullable|url|max:500',
+            'registration_google_form_pindahan' => 'nullable|url|max:500',
+        ]);
+
+        SiteSetting::setValue('registration_open', $request->has('registration_open') ? '1' : '0', 'registration');
+        SiteSetting::setValue('registration_start_date', $request->input('registration_start_date'), 'registration');
+        SiteSetting::setValue('registration_end_date', $request->input('registration_end_date'), 'registration');
+        SiteSetting::setValue('registration_capacity', $request->input('registration_capacity'), 'registration');
+        SiteSetting::setValue('registration_closed_message', $request->input('registration_closed_message'), 'registration');
+        SiteSetting::setValue('registration_google_form_baru', $request->input('registration_google_form_baru'), 'registration');
+        SiteSetting::setValue('registration_google_form_pindahan', $request->input('registration_google_form_pindahan'), 'registration');
+
+        return redirect()->route('admin.settings.registration')->with('success', 'Pengaturan pendaftaran berhasil diperbarui!');
     }
 }

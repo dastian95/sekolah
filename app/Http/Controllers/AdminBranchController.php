@@ -4,53 +4,82 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AdminBranchController extends Controller
 {
-    /**
-     * Show branch management page.
-     */
     public function index()
     {
         $branches = Branch::ordered()->get();
-
         return view('admin.branches.index', compact('branches'));
     }
 
-    /**
-     * Store a new branch (starts as disabled / Coming Soon).
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:100',
-        ]);
+        $request->validate(['name' => 'required|string|max:100']);
 
         $maxOrder = Branch::max('sort_order') ?? 0;
+        $slug = Str::slug($request->name);
+        $baseSlug = $slug;
+        $i = 1;
+        while (Branch::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $i++;
+        }
 
         Branch::create([
             'name'       => $request->name,
-            'is_active'  => false, // always starts as Coming Soon
+            'slug'       => $slug,
+            'color'      => '#1a3a5c',
+            'is_active'  => false,
             'sort_order' => $maxOrder + 1,
         ]);
 
         return redirect()->route('admin.branches.index')
-            ->with('success', 'Cabang "' . $request->name . '" berhasil ditambahkan dalam status Coming Soon.');
+            ->with('success', 'Cabang "' . $request->name . '" berhasil ditambahkan.');
     }
 
-    /**
-     * Update branch name.
-     */
+    public function edit(Branch $branch)
+    {
+        return view('admin.branches.edit', compact('branch'));
+    }
+
     public function update(Request $request, Branch $branch)
     {
         $request->validate([
-            'name' => 'required|string|max:100',
+            'name'        => 'required|string|max:100',
+            'description' => 'nullable|string|max:1000',
+            'address'     => 'nullable|string|max:500',
+            'phone'       => 'nullable|string|max:30',
+            'email'       => 'nullable|email|max:100',
+            'color'       => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'logo'        => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
         ]);
 
-        $branch->update(['name' => $request->name]);
+        $data = $request->only(['name', 'description', 'address', 'phone', 'email', 'color']);
+
+        // Re-generate slug only if name changed
+        if ($branch->name !== $request->name) {
+            $slug = Str::slug($request->name);
+            $base = $slug;
+            $i = 1;
+            while (Branch::where('slug', $slug)->where('id', '!=', $branch->id)->exists()) {
+                $slug = $base . '-' . $i++;
+            }
+            $data['slug'] = $slug;
+        }
+
+        if ($request->hasFile('logo')) {
+            if ($branch->logo) {
+                Storage::disk('public')->delete($branch->logo);
+            }
+            $data['logo'] = $request->file('logo')->store('branches', 'public');
+        }
+
+        $branch->update($data);
 
         return redirect()->route('admin.branches.index')
-            ->with('success', 'Nama cabang berhasil diubah.');
+            ->with('success', 'Informasi cabang "' . $branch->name . '" berhasil diperbarui.');
     }
 
     /**

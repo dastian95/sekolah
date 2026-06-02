@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login Siswa - SDIT Labitech Insan Mulia')
+@section('title', 'Login Siswa - Laboratorium Islamic Technology-Labitech')
 
 @section('extra-css')
 <style>

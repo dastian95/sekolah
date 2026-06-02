@@ -6,6 +6,7 @@ use App\Observers\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\User;
 
 class Student extends Authenticatable
 {
@@ -97,26 +98,42 @@ class Student extends Authenticatable
     ];
 
     // Helper untuk menampilkan status dengan warna badge Bootstrap (untuk tampilan nanti)
-    public function getStatusBadgeAttribute()
+    public function getStatusBadgeAttribute(): string
     {
         return match($this->status) {
-            'pending' => 'warning',   // Kuning
-            'contacted' => 'info',    // Biru Muda
-            'verified' => 'success',  // Hijau
-            'rejected' => 'danger',   // Merah
-            default => 'secondary',
+            'pending'   => 'warning',
+            'contacted' => 'info',
+            'verified'  => 'success',
+            'rejected'  => 'danger',
+            default     => 'secondary',
         };
     }
 
-    public function getStatusLabelAttribute()
+    public function getStatusLabelAttribute(): string
     {
         return match($this->status) {
-            'pending' => 'Menunggu Konfirmasi',
-            'contacted' => 'Sedang Dihubungi',
-            'verified' => 'Diterima',
-            'rejected' => 'Ditolak',
-            default => 'Tidak Diketahui',
+            'pending'   => 'Baru Daftar',
+            'contacted' => 'Sedang Diproses',
+            'verified'  => 'Diterima',
+            'rejected'  => 'Tidak Diterima',
+            default     => 'Tidak Diketahui',
         };
+    }
+
+    public function getStatusDescriptionAttribute(): string
+    {
+        return match($this->status) {
+            'pending'   => 'Data kamu sudah kami terima. Silakan lengkapi data jika ada yang kurang.',
+            'contacted' => 'Pendaftaran kamu sedang kami tinjau. Data tidak bisa diubah selama proses ini.',
+            'verified'  => 'Selamat! Kamu diterima sebagai peserta didik baru SDIT Labitech Insan Mulia.',
+            'rejected'  => 'Maaf, pendaftaran kamu belum bisa kami terima saat ini. Silakan hubungi sekolah untuk informasi lebih lanjut.',
+            default     => 'Status tidak diketahui.',
+        };
+    }
+
+    public function canEditProfile(): bool
+    {
+        return $this->status === 'pending';
     }
 
     /**
@@ -124,14 +141,11 @@ class Student extends Authenticatable
      */
     public function createdBy()
     {
-        return $this->belongsTo(Admin::class, 'created_by', 'id_admin');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
-    /**
-     * Get the user who last updated the student record.
-     */
     public function updatedBy()
     {
-        return $this->belongsTo(Admin::class, 'updated_by', 'id_admin');
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

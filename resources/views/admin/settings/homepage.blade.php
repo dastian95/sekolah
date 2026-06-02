@@ -43,7 +43,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.settings.homepage.update') }}">
+                <form method="POST" action="{{ route('admin.settings.homepage.update') }}" enctype="multipart/form-data">
                     @csrf
 
                     {{-- Banner Penerimaan Siswa Baru --}}
@@ -89,6 +89,100 @@
                                     placeholder="Contoh: /pendaftaran atau https://example.com/daftar">
                                 <small class="text-muted">URL tujuan saat banner diklik. Kosongkan jika tidak perlu link.</small>
                             </div>
+                        </div>
+                    </div>
+
+                    {{-- Foto Hero --}}
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="mb-0"><i class="fas fa-image me-2 text-primary"></i> Foto Sekolah (Hero)</h5>
+                        </div>
+                        <div class="card-body">
+                            @php $heroImage = $settings['homepage_hero_image'] ?? null; @endphp
+                            @if($heroImage)
+                                <div class="mb-3">
+                                    <img src="{{ asset('storage/'.$heroImage) }}" alt="Foto Hero"
+                                         style="height:160px; width:auto; border-radius:10px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+                                    <p class="small text-muted mt-1 mb-0">Foto saat ini. Upload baru untuk mengganti.</p>
+                                </div>
+                            @else
+                                <div class="mb-3 p-4 rounded text-center text-muted" style="background:#f8f9fa; border:2px dashed #dee2e6;">
+                                    <i class="fas fa-camera fa-2x mb-2 d-block"></i>
+                                    Belum ada foto. Upload untuk menampilkan foto di hero homepage.
+                                </div>
+                            @endif
+                            <input type="file" name="homepage_hero_image" class="form-control @error('homepage_hero_image') is-invalid @enderror"
+                                   accept="image/jpeg,image/png,image/webp">
+                            @error('homepage_hero_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <small class="text-muted">Format: JPG, PNG, WebP. Maks 2MB. Ukuran ideal: 800×500px.</small>
+                        </div>
+                    </div>
+
+                    {{-- Foto Tentang Kami --}}
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="mb-0"><i class="fas fa-school me-2 text-success"></i> Foto Tentang Kami</h5>
+                        </div>
+                        <div class="card-body">
+                            @php $aboutImage = $settings['homepage_about_image'] ?? null; @endphp
+                            @if($aboutImage)
+                                <div class="mb-3">
+                                    <img src="{{ asset('storage/'.$aboutImage) }}" alt="Foto Tentang"
+                                         style="height:160px; width:auto; border-radius:10px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+                                    <p class="small text-muted mt-1 mb-0">Foto saat ini. Upload baru untuk mengganti.</p>
+                                </div>
+                            @else
+                                <div class="mb-3 p-4 rounded text-center text-muted" style="background:#f8f9fa; border:2px dashed #dee2e6;">
+                                    <i class="fas fa-camera fa-2x mb-2 d-block"></i>
+                                    Belum ada foto. Jika kosong, bagian ini menampilkan logo sekolah.
+                                </div>
+                            @endif
+                            <input type="file" name="homepage_about_image" class="form-control @error('homepage_about_image') is-invalid @enderror"
+                                   accept="image/jpeg,image/png,image/webp">
+                            @error('homepage_about_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <small class="text-muted">Foto yang tampil di section Tentang Kami. Format: JPG, PNG, WebP. Maks 2MB.</small>
+                        </div>
+                    </div>
+
+                    {{-- YouTube --}}
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="mb-0"><i class="fab fa-youtube me-2 text-danger"></i> Video YouTube (Section setelah Berita)</h5>
+                        </div>
+                        <div class="card-body">
+                            <label class="form-label fw-bold">URL Video YouTube</label>
+                            <input type="url" name="homepage_video_url" class="form-control @error('homepage_video_url') is-invalid @enderror"
+                                   value="{{ old('homepage_video_url', $settings['homepage_video_url'] ?? '') }}"
+                                   placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX">
+                            @error('homepage_video_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <small class="text-muted">Jika diisi, section YouTube muncul di bawah Berita. Kosongkan untuk menyembunyikan.</small>
+                        </div>
+                    </div>
+
+                    {{-- Video Profil --}}
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="mb-0"><i class="fas fa-video me-2 text-primary"></i> Video Profil Sekolah (Section Tentang Kami)</h5>
+                        </div>
+                        <div class="card-body">
+                            @php $videoFile = $settings['homepage_video_file'] ?? null; @endphp
+                            @if($videoFile)
+                                <div class="mb-3">
+                                    <video controls style="width:100%; max-height:200px; border-radius:10px; background:#000;">
+                                        <source src="{{ asset('storage/'.$videoFile) }}" type="video/mp4">
+                                    </video>
+                                    <p class="small text-muted mt-1 mb-0">Video saat ini. Upload baru untuk mengganti.</p>
+                                </div>
+                            @else
+                                <div class="mb-3 p-4 rounded text-center text-muted" style="background:#f8f9fa; border:2px dashed #dee2e6;">
+                                    <i class="fas fa-video fa-2x mb-2 d-block"></i>
+                                    Belum ada video. Upload untuk menampilkan video profil sekolah.
+                                </div>
+                            @endif
+                            <input type="file" name="homepage_video_file" class="form-control @error('homepage_video_file') is-invalid @enderror"
+                                   accept="video/mp4,video/webm,video/ogg">
+                            @error('homepage_video_file')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <small class="text-muted">Format: MP4, WebM, OGG. Maks 100MB. Pindahkan video dari WA ke komputer dulu, lalu upload di sini.</small>
                         </div>
                     </div>
 

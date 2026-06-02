@@ -60,7 +60,7 @@
                                         <a href="{{ route('news.show', $item->slug) }}" class="text-decoration-none">
                                             <h6 class="mb-0">{{ $item->title }}</h6>
                                         </a>
-                                        <small class="text-muted">Dipublikasikan pada {{ $item->published_at->format('d M Y') }}</small>
+                                        <small class="text-muted">Dipublikasikan pada {{ ($item->published_at ?? $item->created_at)->format('d M Y') }}</small>
                                     </div>
                                     <a href="{{ route('news.show', $item->slug) }}" class="btn btn-sm btn-outline-secondary">Baca</a>
                                 </li>

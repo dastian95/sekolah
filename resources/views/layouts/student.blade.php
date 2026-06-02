@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Portal Siswa') - Labitech Insan Mulia</title>
+    <title>@yield('title', 'Portal Pendaftar') - Laboratorium Islamic Technology-Labitech</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -411,17 +411,45 @@
             .social-icons { justify-content: center; }
             .contact-info { justify-content: center; }
         }
+
+        /* ===== PAGE TRANSITIONS ===== */
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        main.student-main {
+            animation: pageIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        /* ===== TOAST NOTIFICATIONS ===== */
+        .toast-container-fixed {
+            position: fixed;
+            bottom: 1.25rem;
+            right: 1.25rem;
+            z-index: 9999;
+        }
+
+        .toast-custom {
+            min-width: 300px;
+            max-width: 420px;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            border: none;
+        }
     </style>
     @yield('extra-css')
     @stack('styles')
 </head>
 <body>
+    {{-- Wrapper sticky agar kedua navbar (website + student bar) ikut saat scroll --}}
+    <div class="sticky-top" style="z-index: 1030;">
     {{-- ===== NAVBAR 1: Website Utama ===== --}}
-    <nav class="navbar navbar-expand-lg navbar-website sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-website">
         <div class="container-lg">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo INSAN MULIA">
-                <span>Labitech Insan Mulia</span>
+                <img src="{{ asset('images/logo.png') }}" alt="logo Laboratorium Islamic Technology-Labitech">
+                <span>Laboratorium Islamic Technology-Labitech</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#websiteNav">
                 <span class="navbar-toggler-icon"></span>
@@ -451,7 +479,7 @@
                     </li>
                     <li class="nav-item ms-lg-2">
                         <a class="btn btn-student-panel" href="{{ route('student.dashboard') }}">
-                            <i class="fas fa-user-graduate me-1"></i> Portal Siswa
+                            <i class="fas fa-user-graduate me-1"></i> Portal Pendaftar
                         </a>
                     </li>
                 </ul>
@@ -463,7 +491,7 @@
     <nav class="navbar-student-bar">
         <div class="container-lg">
             <button class="student-bar-toggle" onclick="document.getElementById('studentNavItems').classList.toggle('show')">
-                <i class="fas fa-bars me-1"></i> Menu Siswa
+                <i class="fas fa-bars me-1"></i> Menu Pendaftar
             </button>
 
             <ul class="student-nav-items" id="studentNavItems">
@@ -474,29 +502,24 @@
                 </li>
                 <li>
                     <a class="student-nav-link {{ request()->routeIs('student.profile') ? 'active' : '' }}" href="{{ route('student.profile') }}">
-                        <i class="fas fa-id-card"></i> Profil
-                    </a>
-                </li>
-                <li>
-                    <a class="student-nav-link {{ request()->routeIs('student.profile.edit') ? 'active' : '' }}" href="{{ route('student.profile.edit') }}">
-                        <i class="fas fa-edit"></i> Edit Profil
+                        <i class="fas fa-id-card"></i> Data Saya
                     </a>
                 </li>
                 <li>
                     <a class="student-nav-link {{ request()->routeIs('student.graduation.status') ? 'active' : '' }}" href="{{ route('student.graduation.status') }}">
-                        <i class="fas fa-graduation-cap"></i> Status Kelulusan
+                        <i class="fas fa-clipboard-check"></i> Status Pendaftaran
                     </a>
                 </li>
                 <li>
                     <a class="student-nav-link {{ request()->routeIs('student.change-password') ? 'active' : '' }}" href="{{ route('student.change-password') }}">
-                        <i class="fas fa-key"></i> Ubah Password
+                        <i class="fas fa-lock"></i> Ubah Password
                     </a>
                 </li>
             </ul>
 
             <div class="student-bar-right">
                 <span class="student-user">
-                    <i class="fas fa-user-graduate me-1"></i> {{ auth('students')->user()->nama ?? 'Siswa' }}
+                    <i class="fas fa-user-graduate me-1"></i> {{ auth('students')->user()->nama ?? 'Pendaftar' }}
                 </span>
                 <form method="POST" action="{{ route('unified.logout') }}" style="margin: 0;">
                     @csrf
@@ -507,6 +530,7 @@
             </div>
         </div>
     </nav>
+    </div>{{-- end sticky-top wrapper --}}
 
     <!-- Main Content -->
     <main class="student-main">
@@ -527,7 +551,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6 footer-col mb-4">
                         <h5><i class="fas fa-graduation-cap" style="color: var(--secondary-yellow); margin-right: 0.5rem;"></i>LABITECH</h5>
-                        <p style="margin-bottom: 0.4rem; font-size: 0.92rem; font-weight: 500;">SDIT Labitech Insan Mulia</p>
+                        <p style="margin-bottom: 0.4rem; font-size: 0.92rem; font-weight: 500;">Laboratorium Islamic Technology-Labitech</p>
                         <p style="margin-bottom: 1rem; font-size: 0.82rem; color: rgba(255,255,255,0.6);">SD (Sekolah Dasar)</p>
                         <div class="social-icons">
                             <a href="#" class="sc-facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -552,25 +576,98 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 footer-col mb-4">
-                        <h5>Portal Siswa</h5>
+                        <h5>Portal Pendaftar</h5>
                         <ul class="footer-links">
                             <li><a href="{{ route('student.dashboard') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Dashboard</a></li>
-                            <li><a href="{{ route('student.profile') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Profil Saya</a></li>
-                            <li><a href="{{ route('student.graduation.status') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Status Kelulusan</a></li>
+                            <li><a href="{{ route('student.profile') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Data Saya</a></li>
+                            <li><a href="{{ route('student.graduation.status') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Status Pendaftaran</a></li>
                             <li><a href="{{ route('student.change-password') }}"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Ubah Password</a></li>
                             <li><a href="{{ url('/') }}" target="_blank"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 0.4rem; opacity: 0.5;"></i>Lihat Website</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p style="margin: 0;">&copy; {{ date('Y') }} <a href="{{ route('home') }}">Labitech Insan Mulia</a>. Semua hak dilindungi.</p>
+                    <p style="margin: 0;">&copy; {{ date('Y') }} <a href="{{ route('home') }}">Laboratorium Islamic Technology-Labitech</a>. Semua hak dilindungi.</p>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Toast Container -->
+    <div class="toast-container-fixed" id="toastContainer"></div>
+
+    @if(session('success'))
+        <div id="flashSuccess" data-msg="{{ session('success') }}" data-type="success" style="display:none;"></div>
+    @endif
+    @if(session('error'))
+        <div id="flashError" data-msg="{{ session('error') }}" data-type="error" style="display:none;"></div>
+    @endif
+    @if(session('warning'))
+        <div id="flashWarning" data-msg="{{ session('warning') }}" data-type="warning" style="display:none;"></div>
+    @endif
+    @if(session('info'))
+        <div id="flashInfo" data-msg="{{ session('info') }}" data-type="info" style="display:none;"></div>
+    @endif
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    // ===== Toast System =====
+    function showToast(message, type) {
+        type = type || 'success';
+        var icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+        var colors = { success: '#198754', error: '#dc3545', warning: '#ffc107', info: '#0dcaf0' };
+        var container = document.getElementById('toastContainer');
+        if (!container) return;
+        var id = 'toast_' + Date.now();
+        var html = '<div id="' + id + '" class="toast toast-custom align-items-center show mb-2" role="alert">' +
+            '<div class="d-flex">' +
+            '<div class="toast-body d-flex align-items-center gap-2">' +
+            '<i class="fas ' + (icons[type] || icons.success) + '" style="color:' + (colors[type] || colors.success) + ';font-size:1.1rem;flex-shrink:0;"></i>' +
+            '<span>' + message + '</span>' +
+            '</div>' +
+            '<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>' +
+            '</div></div>';
+        container.insertAdjacentHTML('beforeend', html);
+        var el = document.getElementById(id);
+        if (el) {
+            var t = new bootstrap.Toast(el, { delay: 5000 });
+            t.show();
+            el.addEventListener('hidden.bs.toast', function() { el.remove(); });
+        }
+    }
+
+    // Show flash messages as toasts
+    document.addEventListener('DOMContentLoaded', function() {
+        ['flashSuccess','flashError','flashWarning','flashInfo'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) showToast(el.getAttribute('data-msg'), el.getAttribute('data-type'));
+        });
+    });
+
+    // ===== Cross-page Exit Animation =====
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('a[href]');
+        if (!link) return;
+        var href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('javascript') ||
+            href.startsWith('mailto') || href.startsWith('tel') ||
+            link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+        if (href.startsWith('http') && !href.includes(location.hostname)) return;
+        // Skip logout forms (handled by form submit)
+        if (link.closest('form')) return;
+        e.preventDefault();
+        var main = document.querySelector('main.student-main');
+        if (main) {
+            main.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+            main.style.opacity = '0';
+            main.style.transform = 'translateY(-24px)';
+        }
+        setTimeout(function() { window.location.href = href; }, 200);
+    });
+    </script>
+
     @yield('extra-js')
     @stack('scripts')
 </body>

@@ -58,8 +58,8 @@ class AdminNewsController extends Controller
         ]);
 
         $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
-        $validated['is_published'] = $request->has('is_published');
-        $validated['published_at'] = $request->has('is_published') ? now() : null;
+        $validated['is_published'] = $request->input('action', 'publish') === 'publish';
+        $validated['published_at'] = $validated['is_published'] ? now() : null;
 
         if ($request->hasFile('featured_image')) {
             $path = $request->file('featured_image')->store('news', 'public');
@@ -97,14 +97,12 @@ class AdminNewsController extends Controller
             'is_published'   => 'nullable|boolean',
         ]);
 
-        $validated['is_published'] = $request->has('is_published');
+        $validated['is_published'] = $request->input('action', 'publish') === 'publish';
 
-        // If publishing for the first time
         if ($validated['is_published'] && !$news->published_at) {
             $validated['published_at'] = now();
         }
 
-        // If unpublishing
         if (!$validated['is_published']) {
             $validated['published_at'] = null;
         }
@@ -126,6 +124,34 @@ class AdminNewsController extends Controller
         $news->update($validated);
 
         return redirect()->route('admin.news.index')->with('success', 'Berita berhasil diperbarui!');
+    }
+
+    /**
+     * Admin preview — shows article regardless of publish status.
+     */
+    public function preview(int $id)
+    {
+        $news = News::findOrFail($id);
+        return view('news-detail', [
+            'news'        => $news,
+            'recentNews'  => collect(),
+            'relatedNews' => collect(),
+            'isPreview'   => true,
+        ]);
+    }
+
+    /**
+     * Toggle publish/draft status.
+     */
+    public function togglePublish(int $id)
+    {
+        $news = News::findOrFail($id);
+        $news->is_published = !$news->is_published;
+        $news->published_at = $news->is_published ? ($news->published_at ?? now()) : null;
+        $news->save();
+
+        $label = $news->is_published ? 'dipublikasikan' : 'dijadikan draft';
+        return back()->with('success', "Berita berhasil {$label}.");
     }
 
     /**

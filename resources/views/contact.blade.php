@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kontak - Labitech Insan Mulia')
+@section('title', 'Kontak - Laboratorium Islamic Technology-Labitech')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 <section style="padding: 4rem 0; background: linear-gradient(135deg, var(--dark-blue) 0%, #2d5a8c 100%); color: white; text-align: center;">
     <div class="container-lg">
         <h1 style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem;">Hubungi Kami</h1>
-        <p style="font-size: 1.2rem; opacity: 0.9;">Kami siap membantu Anda dengan informasi lengkap tentang SDIT Labitech Insan Mulia</p>
+        <p style="font-size: 1.2rem; opacity: 0.9;">Kami siap membantu Anda dengan informasi lengkap tentang Laboratorium Islamic Technology-Labitech</p>
     </div>
 </section>
 
@@ -78,7 +78,7 @@
                             <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">Identitas sekolah</p>
                         </div>
                     </div>
-                    <p style="margin: 0; color: var(--dark-blue); font-weight: 600; font-size: 1.1rem;">{{ $settings['contact_school_name'] ?? 'SDIT Labitech Insan Mulia' }}</p>
+                    <p style="margin: 0; color: var(--dark-blue); font-weight: 600; font-size: 1.1rem;">{{ $settings['contact_school_name'] ?? 'Laboratorium Islamic Technology-Labitech' }}</p>
                 </div>
 
                 <!-- Level Card -->

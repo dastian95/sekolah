@@ -35,10 +35,10 @@ class StudentController extends Controller
     public function editProfile()
     {
         $student = Auth::guard('students')->user();
-        $restrictedStatuses = ['Sudah Dihubungi', 'tidak lulus', 'lulus'];
 
-        if (in_array($student->status, $restrictedStatuses)) {
-            return redirect()->route('student.dashboard')->with('error', 'Profil tidak dapat diubah karena status Anda saat ini.');
+        if (!$student->canEditProfile()) {
+            return redirect()->route('student.dashboard')
+                ->with('error', 'Data tidak dapat diubah karena status pendaftaran Anda saat ini: ' . $student->status_label);
         }
 
         return view('student.profile-edit', compact('student'));
@@ -49,43 +49,52 @@ class StudentController extends Controller
      */
     public function updateProfile(Request $request)
     {
-        $user = Auth::guard('students')->user();
-        $student = Student::findOrFail($user->id);
-        $restrictedStatuses = ['Sudah Dihubungi', 'tidak lulus', 'lulus'];
+        $student = Auth::guard('students')->user();
+        $student = Student::where('id_siswa', $student->id_siswa)->firstOrFail();
 
-        if (in_array($student->status, $restrictedStatuses)) {
-            return redirect()->route('student.dashboard')->with('error', 'Profil tidak dapat diubah.');
+        if (!$student->canEditProfile()) {
+            return redirect()->route('student.dashboard')
+                ->with('error', 'Data tidak dapat diubah.');
         }
 
+        $id = $student->id_siswa;
+
         $validated = $request->validate([
-            'nama_lengkap' => 'required|string|max:255',
-            'username' => 'required|string|max:50|unique:students,username,' . $student->id,
-            'email' => 'required|email|max:255|unique:students,email,' . $student->id,
-            'telepon' => 'required|string|max:20',
-            'nisn' => 'required|string|max:20|unique:students,nisn,' . $student->id,
-            'nik' => 'required|string|max:20|unique:students,nik,' . $student->id,
-            'no_kk' => 'required|string|max:30',
-            'jenis_kelamin' => 'required|in:L,P',
-            'tempat_lahir' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
-            'agama' => 'required|string|max:50',
-            'anak_ke' => 'nullable|integer|min:1',
-            'jumlah_saudara' => 'nullable|integer|min:0',
-            'tinggal_bersama' => 'nullable|string|max:100',
-            'alamat' => 'required|string',
-            'nama_ayah' => 'required|string|max:255',
-            'pekerjaan_ayah' => 'nullable|string|max:100',
-            'penghasilan_ayah' => 'nullable|string|max:100',
-            'hp_ayah' => 'nullable|string|max:20',
-            'nama_ibu' => 'required|string|max:255',
-            'pekerjaan_ibu' => 'nullable|string|max:100',
-            'penghasilan_ibu' => 'nullable|string|max:100',
-            'hp_ibu' => 'nullable|string|max:20',
+            'nama'            => 'required|string|max:255',
+            'username'        => 'required|string|max:50|unique:students,username,' . $id . ',id_siswa',
+            'email'           => 'required|email|max:255|unique:students,email,' . $id . ',id_siswa',
+            'hp'              => 'required|string|max:20',
+            'nisn'            => 'nullable|string|max:20|unique:students,nisn,' . $id . ',id_siswa',
+            'nik'             => 'nullable|string|max:20|unique:students,nik,' . $id . ',id_siswa',
+            'jenis_kelamin'   => 'required|in:L,P',
+            'tempat_lahir'    => 'required|string|max:100',
+            'tanggal_lahir'   => 'required|date',
+            'agama'           => 'required|string|max:50',
+            'anak_ke'         => 'nullable|integer|min:1',
+            'status_keluarga' => 'nullable|string|max:50',
+            'sekolah_asal'    => 'nullable|string|max:255',
+            'alamat'          => 'required|string',
+            'rt'              => 'nullable|string|max:10',
+            'rw'              => 'nullable|string|max:10',
+            'kelurahan'       => 'nullable|string|max:100',
+            'kecamatan'       => 'nullable|string|max:100',
+            'kabupaten'       => 'nullable|string|max:100',
+            'provinsi'        => 'nullable|string|max:100',
+            'kode_pos'        => 'nullable|string|max:10',
+            'nama_ayah'       => 'required|string|max:255',
+            'pekerjaan_ayah'  => 'nullable|string|max:100',
+            'nohp_ayah'       => 'nullable|string|max:20',
+            'nama_ibu'        => 'nullable|string|max:255',
+            'pekerjaan_ibu'   => 'nullable|string|max:100',
+            'nohp_ibu'        => 'nullable|string|max:20',
+            'nama_wali'       => 'nullable|string|max:255',
+            'nohp_wali'       => 'nullable|string|max:20',
         ]);
 
         $student->update($validated);
 
-        return redirect()->route('student.dashboard')->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('student.profile')
+            ->with('success', 'Data berhasil diperbarui!');
     }
 
     /**
@@ -148,7 +157,7 @@ class StudentController extends Controller
         ]);
 
         $user = Auth::guard('students')->user();
-        $student = Student::findOrFail($user->id);
+        $student = Student::findOrFail($user->getKey());
 
         if (!Hash::check($request->current_password, $student->password)) {
             return back()->withErrors(['current_password' => 'Password lama tidak sesuai.']);

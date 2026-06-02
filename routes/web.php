@@ -3,11 +3,11 @@
 use App\Http\Controllers\AdminStudentController;
 use App\Http\Controllers\AdminTransferStudentController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\StudentAuthController;
-use App\Http\Controllers\StudentController;
+// use App\Http\Controllers\StudentAuthController;   // disabled — student section hidden
+// use App\Http\Controllers\StudentController;       // disabled — student section hidden
 use App\Http\Controllers\UnifiedLoginController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\PendaftaranPindahanController;
+// use App\Http\Controllers\PendaftaranPindahanController; // disabled — redirect ke pendaftaran
 use App\Http\Controllers\StudentImportController;
 use App\Http\Controllers\AdminNewsController;
 use App\Http\Controllers\AdminSettingController;
@@ -16,6 +16,8 @@ use App\Http\Controllers\AdminContactMessageController;
 use App\Http\Controllers\AdminBranchController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminPartnershipController;
+use App\Http\Controllers\AdminCertificateController;
 use Illuminate\Support\Facades\Route;
 
 // Home page
@@ -27,19 +29,34 @@ Route::get('/tentang-kami', [PageController::class, 'about'])->name('about');
 // News page
 Route::get('/berita', [PageController::class, 'news'])->name('news');
 
+// Branch detail page
+Route::get('/cabang/{branch:slug}', [PageController::class, 'showBranch'])->name('branch.show');
+
 // News detail page
 Route::get('/berita/{news}', [PageController::class, 'showNews'])->name('news.show');
 
 // Contact page
 Route::get('/kontak', [PageController::class, 'contact'])->name('contact');
 
+// Kemitraan page
+Route::get('/kemitraan', [PageController::class, 'kemitraan'])->name('kemitraan');
+
+// Certificates page
+Route::get('/certificates', [PageController::class, 'certificates'])->name('certificates');
+
 // Global Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
-// Unified Login Routes (replaces old student.login and login routes)
-Route::middleware('guest')->controller(UnifiedLoginController::class)->group(function () {
-    Route::get('/login', 'showLoginForm')->name('unified.login');
-    Route::post('/login', 'login')->name('unified.login.submit');
+// Old /login — disabled, redirect to home
+Route::middleware('guest')->group(function () {
+    Route::get('/login', function () { return redirect()->route('home'); })->name('unified.login');
+    Route::post('/login', function () { return redirect()->route('home'); })->name('unified.login.submit');
+});
+
+// Secret Admin Login — URL tidak terlihat di navbar publik
+Route::middleware('guest')->group(function () {
+    Route::get('/lt-9x2k7m-staf-p4n3l', [AuthController::class, 'showLoginForm']);
+    Route::post('/lt-9x2k7m-staf-p4n3l', [AuthController::class, 'login'])->name('login.submit');
 });
 
 Route::post('/logout', [UnifiedLoginController::class, 'logout'])->name('unified.logout');
@@ -51,31 +68,42 @@ Route::post('/kontak', [PageController::class, 'sendContact'])->name('contact.se
 Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran');
 Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 
-// Pendaftaran Pindahan page
-Route::get('/pendaftaran-pindahan', [PendaftaranPindahanController::class, 'create'])->name('pendaftaran-pindahan');
-Route::post('/pendaftaran-pindahan', [PendaftaranPindahanController::class, 'store'])->name('pendaftaran-pindahan.store');
+// Pendaftaran Pindahan — redirect ke halaman pendaftaran terpadu
+Route::get('/pendaftaran-pindahan', function () {
+    return redirect()->route('pendaftaran');
+})->name('pendaftaran-pindahan');
+
+// =============================================
+// STUDENT ROUTES — DINONAKTIFKAN SEMENTARA
+// Uncomment semua blok ini untuk mengaktifkan kembali
+// =============================================
 
 // Student Register Routes (Guest only)
-Route::middleware('guest')->controller(StudentAuthController::class)->group(function () {
-    Route::get('/student-register', 'showRegisterForm')->name('student.register');
-    Route::post('/student-register', 'register')->name('student.register.submit');
-});
+// Route::middleware('guest')->controller(StudentAuthController::class)->group(function () {
+//     Route::get('/student-register', 'showRegisterForm')->name('student.register');
+//     Route::post('/student-register', 'register')->name('student.register.submit');
+// });
 
 // Student Routes (Authenticated)
-Route::middleware('auth:students')->controller(StudentController::class)->prefix('student')->name('student.')->group(function () {
-    Route::get('/dashboard', 'dashboard')->name('dashboard');
-    Route::get('/profile', 'profile')->name('profile');
+// Route::middleware('auth:students')->controller(StudentController::class)->prefix('student')->name('student.')->group(function () {
+//     Route::get('/dashboard', 'dashboard')->name('dashboard');
+//     Route::get('/profile', 'profile')->name('profile');
+//     Route::get('/profile/edit', 'editProfile')->name('profile.edit');
+//     Route::put('/profile/update', 'updateProfile')->name('profile.update');
+//     Route::get('/graduation-status', 'graduationStatus')->name('graduation.status');
+//     Route::get('/certificate', 'downloadCertificate')->name('certificate.download');
+//     Route::get('/change-password', 'changePassword')->name('change-password');
+//     Route::post('/change-password', 'updatePassword')->name('update-password');
+//     Route::post('/logout', 'logout')->name('logout');
+// });
 
-    // Edit and Update Profile
-    Route::get('/profile/edit', 'editProfile')->name('profile.edit');
-    Route::put('/profile/update', 'updateProfile')->name('profile.update');
-
-    Route::get('/graduation-status', 'graduationStatus')->name('graduation.status');
-    Route::get('/certificate', 'downloadCertificate')->name('certificate.download');
-    Route::get('/change-password', 'changePassword')->name('change-password');
-    Route::post('/change-password', 'updatePassword')->name('update-password');
-    Route::post('/logout', 'logout')->name('logout');
-});
+// Placeholder routes agar nama route tidak error di views yang masih ada
+Route::get('/student-register', function () { return redirect()->route('home'); })->name('student.register');
+Route::post('/student-register', function () { return redirect()->route('home'); })->name('student.register.submit');
+Route::get('/student/dashboard', function () { return redirect()->route('home'); })->name('student.dashboard');
+Route::get('/student/profile', function () { return redirect()->route('home'); })->name('student.profile');
+Route::get('/student/graduation-status', function () { return redirect()->route('home'); })->name('student.graduation.status');
+Route::get('/student/change-password', function () { return redirect()->route('home'); })->name('student.change-password');
 
 // Admin Routes (Diproteksi Login Session)
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
@@ -92,6 +120,8 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     
     // News CRUD
     Route::resource('news', AdminNewsController::class)->except(['show'])->parameters(['news' => 'news:id']);
+    Route::patch('/news/{id}/toggle', [AdminNewsController::class, 'togglePublish'])->name('news.toggle');
+    Route::get('/news/{id}/preview', [AdminNewsController::class, 'preview'])->name('news.preview');
 
     // Site Settings
     Route::get('/settings/about', [AdminSettingController::class, 'editAbout'])->name('settings.about');
@@ -100,13 +130,34 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/settings/contact', [AdminSettingController::class, 'updateContact'])->name('settings.contact.update');
     Route::get('/settings/homepage', [AdminSettingController::class, 'editHomepage'])->name('settings.homepage');
     Route::post('/settings/homepage', [AdminSettingController::class, 'updateHomepage'])->name('settings.homepage.update');
+    Route::get('/settings/registration', [AdminSettingController::class, 'editRegistration'])->name('settings.registration');
+    Route::post('/settings/registration', [AdminSettingController::class, 'updateRegistration'])->name('settings.registration.update');
 
     // Branch Management
     Route::get('/branches', [AdminBranchController::class, 'index'])->name('branches.index');
     Route::post('/branches', [AdminBranchController::class, 'store'])->name('branches.store');
+    Route::get('/branches/{branch}/edit', [AdminBranchController::class, 'edit'])->name('branches.edit');
     Route::put('/branches/{branch}', [AdminBranchController::class, 'update'])->name('branches.update');
     Route::patch('/branches/{branch}/toggle', [AdminBranchController::class, 'toggleStatus'])->name('branches.toggle');
     Route::delete('/branches/{branch}', [AdminBranchController::class, 'destroy'])->name('branches.destroy');
+
+    // Partnerships CRUD
+    Route::get('/partnerships', [AdminPartnershipController::class, 'index'])->name('partnerships.index');
+    Route::get('/partnerships/create', [AdminPartnershipController::class, 'create'])->name('partnerships.create');
+    Route::post('/partnerships', [AdminPartnershipController::class, 'store'])->name('partnerships.store');
+    Route::get('/partnerships/{partnership}/edit', [AdminPartnershipController::class, 'edit'])->name('partnerships.edit');
+    Route::put('/partnerships/{partnership}', [AdminPartnershipController::class, 'update'])->name('partnerships.update');
+    Route::post('/partnerships/{partnership}/toggle', [AdminPartnershipController::class, 'toggleActive'])->name('partnerships.toggle');
+    Route::delete('/partnerships/{partnership}', [AdminPartnershipController::class, 'destroy'])->name('partnerships.destroy');
+
+    // Certificates CRUD
+    Route::get('/certificates', [AdminCertificateController::class, 'index'])->name('certificates.index');
+    Route::get('/certificates/create', [AdminCertificateController::class, 'create'])->name('certificates.create');
+    Route::post('/certificates', [AdminCertificateController::class, 'store'])->name('certificates.store');
+    Route::get('/certificates/{certificate}/edit', [AdminCertificateController::class, 'edit'])->name('certificates.edit');
+    Route::put('/certificates/{certificate}', [AdminCertificateController::class, 'update'])->name('certificates.update');
+    Route::post('/certificates/{certificate}/toggle', [AdminCertificateController::class, 'toggleActive'])->name('certificates.toggle');
+    Route::delete('/certificates/{certificate}', [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
 
     Route::get('/transfer-students', [AdminTransferStudentController::class, 'index'])->name('transfer-students.index');
     Route::get('/transfer-students/{transferStudent}', [AdminTransferStudentController::class, 'show'])->name('transfer-students.show');
