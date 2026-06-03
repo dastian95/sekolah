@@ -1,157 +1,232 @@
 @extends('layouts.app')
 
-@section('title', 'Login Administrator - Laboratorium Islamic Technology-Labitech')
+@section('title', 'Login Administrator - Labitech')
 
 @section('extra-css')
 <style>
     body {
-        background-color: #f4f6f9;
+        background: linear-gradient(135deg, #0a1628 0%, #0d2b5e 50%, #0a1628 100%);
+        min-height: 100vh;
     }
+
     .login-wrapper {
-        min-height: 75vh;
+        min-height: 85vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 2rem 0;
     }
-    
+
     .login-card {
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        overflow: hidden;
-        background: white;
-        transition: transform 0.3s ease;
+        background: rgba(255,255,255,0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 3rem;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.4);
     }
 
-    .login-image-side {
-        background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
-        color: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 3rem;
-        height: 100%;
+    .login-logo {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
     }
 
-    .login-image-side img {
-        width: 110px;
-        margin-bottom: 1.5rem;
+    .login-title {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
     }
-    
-    .login-body {
-        padding: 3rem;
+
+    .login-subtitle {
+        color: rgba(255,255,255,0.5);
+        font-size: 0.85rem;
+        margin: 0;
     }
-    
-    .form-floating > .form-control {
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
+
+    .form-label {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.82rem;
+        font-weight: 500;
+        margin-bottom: 0.4rem;
     }
-    
-    .form-floating > .form-control:focus {
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 0.25rem rgba(0, 102, 204, 0.15);
+
+    .form-control {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 10px;
+        color: #ffffff;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        transition: all 0.2s;
     }
-    
+
+    .form-control:focus {
+        background: rgba(255,255,255,0.12);
+        border-color: #4d94ff;
+        box-shadow: 0 0 0 3px rgba(77,148,255,0.15);
+        color: #ffffff;
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255,255,255,0.3);
+    }
+
+    .form-check-label {
+        color: rgba(255,255,255,0.6);
+        font-size: 0.82rem;
+    }
+
+    .form-check-input:checked {
+        background-color: #4d94ff;
+        border-color: #4d94ff;
+    }
+
     .btn-login {
-        padding: 0.8rem;
-        border-radius: 8px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        background: var(--primary-blue);
+        background: linear-gradient(135deg, #1a6fff 0%, #0052cc 100%);
         border: none;
-        margin-top: 1rem;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.8rem;
+        width: 100%;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+        margin-top: 0.5rem;
     }
-    
+
     .btn-login:hover {
-        background: var(--dark-blue);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        background: linear-gradient(135deg, #3d7fff 0%, #1a6fff 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(26,111,255,0.35);
+        color: white;
     }
+
+    .divider {
+        border-color: rgba(255,255,255,0.1);
+        margin: 1.5rem 0;
+    }
+
+    .back-link {
+        color: rgba(255,255,255,0.4);
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover {
+        color: rgba(255,255,255,0.7);
+    }
+
+    .alert-danger {
+        background: rgba(220,53,69,0.2);
+        border: 1px solid rgba(220,53,69,0.3);
+        color: #ff6b7a;
+        border-radius: 10px;
+        font-size: 0.85rem;
+    }
+
+    .invalid-feedback {
+        color: #ff6b7a;
+        font-size: 0.78rem;
+    }
+
+    .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #4d94ff;
+        display: inline-block;
+        margin: 0 3px;
+        opacity: 0.6;
+    }
+    .dot:nth-child(2) { background: #66aaff; opacity: 0.8; }
+    .dot:nth-child(3) { background: #99ccff; }
 </style>
 @endsection
 
 @section('content')
 <div class="container login-wrapper">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="card login-card">
-                <div class="row g-0">
-                    <!-- Kolom Branding Kiri -->
-                    <div class="col-lg-6 d-none d-lg-block login-image-side">
-                        <img src="{{ asset('images/logo.png') }}" alt="logo Laboratorium Islamic Technology-Labitech">
-                        <h4 class="fw-bold text-white"><i class="fas fa-school me-2"></i>Laboratorium Islamic Technology-Labitech</h4>
-                        <p class="text-white-50 small mt-2"><i class="fas fa-database me-2"></i>Portal Administrator untuk manajemen data sekolah.</p>
-                    </div>
+    <div class="row justify-content-center w-100">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="login-card">
 
-                    <!-- Kolom Form Kanan -->
-                    <div class="col-lg-6">
-                        <div class="login-body">
-                            <div class="text-center text-lg-start mb-4">
-                                <h4 class="fw-bold"><i class="fas fa-user-circle me-2"></i>Selamat Datang Kembali</h4>
-                                <p class="text-muted"><i class="fas fa-lock me-2"></i>Silakan login untuk melanjutkan</p>
-                            </div>
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <i class="fas fa-exclamation-circle me-2"></i>
-                                    <strong>Login Gagal!</strong>
-                                    @foreach ($errors->all() as $error)
-                                        <div class="mt-2">{{ $error }}</div>
-                                    @endforeach
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                            @endif
-
-                            <form method="POST" action="{{ route('login.submit') }}">
-                                @csrf
-
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control @error('login') is-invalid @enderror" id="login" name="login" placeholder="Username atau Email" value="{{ old('login') }}" required autocomplete="off" autofocus>
-                                    <label for="login"><i class="fas fa-user me-2"></i>Username atau Email</label>
-                                    @error('login')
-                                        <span class="invalid-feedback" role="alert">
-                                            <i class="fas fa-times-circle me-1"></i>{{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-floating mb-4">
-                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" required autocomplete="current-password">
-                                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <i class="fas fa-times-circle me-1"></i>{{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label text-secondary small" for="remember">
-                                            <i class="fas fa-check-circle me-1"></i>Ingat Saya
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-login">
-                                        <i class="fas fa-sign-in-alt me-2"></i> MASUK
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                {{-- Header --}}
+                <div class="text-center mb-4">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="login-logo mb-3">
+                    <p class="login-title">Portal Administrator</p>
+                    <p class="login-subtitle">Laboratorium Islamic Technology-Labitech</p>
+                    <div class="mt-2">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
                     </div>
                 </div>
-            </div>
-            
-            <div class="text-center mt-4">
-                <a href="{{ route('home') }}" class="text-decoration-none text-muted small">
-                    <i class="fas fa-arrow-left me-1"></i> Kembali ke Beranda
-                </a>
+
+                {{-- Error --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger mb-3">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        @foreach ($errors->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </div>
+                @endif
+
+                {{-- Form --}}
+                <form method="POST" action="{{ route('login.submit') }}">
+                    @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Username atau Email</label>
+                        <input type="text"
+                               class="form-control @error('login') is-invalid @enderror"
+                               name="login"
+                               placeholder="Masukkan username atau email"
+                               value="{{ old('login') }}"
+                               required autocomplete="off" autofocus>
+                        @error('login')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password"
+                               class="form-control @error('password') is-invalid @enderror"
+                               name="password"
+                               placeholder="Masukkan password"
+                               required autocomplete="current-password">
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                            <label class="form-check-label" for="remember">Ingat Saya</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt me-2"></i> MASUK
+                    </button>
+                </form>
+
+                <hr class="divider">
+
+                <div class="text-center">
+                    <a href="{{ route('home') }}" class="back-link">
+                        <i class="fas fa-arrow-left me-1"></i> Kembali ke Beranda
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
