@@ -8,61 +8,80 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy to Hostinger
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          protocol: ftps
+          port: 21
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .env
+            *.zip
+            storage/logs/**
+            bootstrap/cache/**
+
+      - name: Post-deploy via SSH
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
+          command_timeout: 30m
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
-            
-            echo "=== Checking available PHP versions ==="
-            php -v || true
-            php74 -v || true
-            php75 -v || true
-            php80 -v || true
-            php81 -v || true
-            php82 -v || true
-            php83 -v || true
-            
-            # Try to find PHP 8.2+, fallback to php
+
+            echo "=== Detect PHP version ==="
             if command -v php82 &> /dev/null; then
               PHP_BIN="php82"
             elif command -v php83 &> /dev/null; then
               PHP_BIN="php83"
-            elif command -v php81 &> /dev/null; then
-              PHP_BIN="php81"
             else
               PHP_BIN="php"
             fi
-            
-            echo "=== Using PHP: $PHP_BIN ==="
-            $PHP_BIN -v
-            
-            echo "=== Installing composer dependencies ==="
-            composer install --no-dev --optimize-autoloader --ignore-platform-reqs 2>&1
-            
-            echo "=== Clearing all caches ==="
-            $PHP_BIN artisan cache:clear 2>&1 || true
-            $PHP_BIN artisan config:clear 2>&1 || true
-            $PHP_BIN artisan route:clear 2>&1 || true
-            $PHP_BIN artisan view:clear 2>&1 || true
-            
-            echo "=== Running migrations ==="
-            $PHP_BIN artisan migrate --force 2>&1 || true
-            
-            echo "=== Creating storage link ==="
-            $PHP_BIN artisan storage:link 2>&1 || true
-            
-            echo "=== Caching for production ==="
-            $PHP_BIN artisan config:cache 2>&1 || true
-            $PHP_BIN artisan route:cache 2>&1 || true
-            $PHP_BIN artisan view:cache 2>&1 || true
-            
-            echo "=== Setting permissions ==="
-            chmod -R 755 storage/ bootstrap/cache/ 2>&1 || true
-            
-            echo "✓ Deployment completed successfully!"
+            echo "Using: $($PHP_BIN -v | head -1)"
+
+            echo "=== Install composer dependencies ==="
+            composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
+
+            echo "=== Clear caches ==="
+            $PHP_BIN artisan cache:clear || true
+            $PHP_BIN artisan config:clear || true
+            $PHP_BIN artisan route:clear || true
+            $PHP_BIN artisan view:clear || true
+
+            echo "=== Run migrations ==="
+            $PHP_BIN artisan migrate --force
+
+            echo "=== Create storage link ==="
+            $PHP_BIN artisan storage:link || true
+
+            echo "=== Cache for production ==="
+            $PHP_BIN artisan config:cache
+            $PHP_BIN artisan route:cache
+            $PHP_BIN artisan view:cache
+
+            echo "=== Set permissions ==="
+            chmod -R 755 storage/ bootstrap/cache/
+
+            echo "✓ Deployment completed!"
