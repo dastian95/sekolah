@@ -22,25 +22,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          protocol: ftps
-          port: 21
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .env
-            *.zip
-            storage/logs/**
-            bootstrap/cache/**
-
-      - name: Post-deploy via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -50,6 +32,10 @@ jobs:
           command_timeout: 30m
           script: |
             cd ${{ secrets.SSH_PROJECT_DIR }}
+
+            echo "=== Git pull latest code ==="
+            git fetch origin
+            git reset --hard origin/main
 
             echo "=== Detect PHP version ==="
             if command -v php82 &> /dev/null; then
@@ -61,20 +47,20 @@ jobs:
             fi
             echo "Using: $($PHP_BIN -v | head -1)"
 
-            echo "=== Install composer dependencies ==="
+            echo "=== Install Composer dependencies ==="
             composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
             echo "=== Clear caches ==="
-            $PHP_BIN artisan cache:clear || true
-            $PHP_BIN artisan config:clear || true
-            $PHP_BIN artisan route:clear || true
-            $PHP_BIN artisan view:clear || true
+            $PHP_BIN artisan cache:clear 2>&1 || true
+            $PHP_BIN artisan config:clear 2>&1 || true
+            $PHP_BIN artisan route:clear 2>&1 || true
+            $PHP_BIN artisan view:clear 2>&1 || true
 
             echo "=== Run migrations ==="
             $PHP_BIN artisan migrate --force
 
             echo "=== Create storage link ==="
-            $PHP_BIN artisan storage:link || true
+            $PHP_BIN artisan storage:link 2>&1 || true
 
             echo "=== Cache for production ==="
             $PHP_BIN artisan config:cache
