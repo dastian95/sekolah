@@ -17,7 +17,7 @@
                 <div style="text-align: center; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center;">
                     <img src="{{ asset('images/logo2.png') }}" alt="Labitech Logo" style="width: 100%; max-width: 360px; height: auto; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); animation: float 3s ease-in-out infinite;">
                     <p style="font-size: 0.95rem; margin: 0.75rem 0 0.25rem; opacity: 0.95;">www.labitech.sch.id</p>
-                    <p style="font-size: 0.85rem; color: var(--secondary-yellow); font-weight: 600; margin: 0;">Iman - Ilmu - Amal</p>
+                    <p style="font-size: 0.85rem; color: var(--secondary-yellow); font-weight: 600; margin: 0;">{{ $contactSettings['contact_motto'] ?? 'Iman - Ilmu - Amal' }}</p>
                 </div>
 
                 <!-- Campus Cards Grid -->
