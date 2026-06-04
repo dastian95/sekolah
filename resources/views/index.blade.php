@@ -71,7 +71,7 @@
                     <div style="width:100%; height:260px; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
                         <i class="fas fa-camera" style="font-size:2.5rem; color:rgba(255,255,255,0.4);"></i>
                         <p style="color:rgba(255,255,255,0.6); margin:0; font-size:0.9rem; font-weight:600;">Foto Sekolah</p>
-                        <p style="color:rgba(255,255,255,0.35); margin:0; font-size:0.72rem;">Upload foto di Admin → Pengaturan → Halaman Utama</p>
+                        <p style="color:rgba(255,255,255,0.35); margin:0; font-size:0.72rem;">Foto Sekolah</p>
                     </div>
                 @endif
                 
@@ -381,17 +381,6 @@
             <div class="youtube-video">
                 <iframe src="{{ $videoEmbedUrl }}" allowfullscreen loading="lazy"></iframe>
             </div>
-        </div>
-    </div>
-</section>
-@else
-<!-- YouTube Placeholder -->
-<section style="padding: 3rem 0; background: #f8f9fa;">
-    <div class="container-lg">
-        <div style="border: 2px dashed #dee2e6; border-radius: 16px; padding: 3rem; text-align: center; background: white;">
-            <i class="fab fa-youtube" style="font-size: 3rem; color: #dee2e6; display: block; margin-bottom: 1rem;"></i>
-            <h4 style="color: #aaa; margin-bottom: 0.5rem;">LABITECH TV on YouTube</h4>
-            <p class="text-muted small mb-0">Tambahkan URL YouTube di <strong>Admin → Pengaturan → Halaman Utama</strong></p>
         </div>
     </div>
 </section>
