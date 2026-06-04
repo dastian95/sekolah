@@ -47,7 +47,10 @@ class AdminSettingController extends Controller
      */
     public function editContact()
     {
-        $settings = SiteSetting::getGroup('contact');
+        $settings = array_merge(
+            SiteSetting::getGroup('contact'),
+            SiteSetting::getGroup('social')
+        );
 
         return view('admin.settings.contact', compact('settings'));
     }
@@ -64,10 +67,21 @@ class AdminSettingController extends Controller
             'contact_school_name' => 'nullable|string|max:255',
             'contact_school_level'=> 'nullable|string|max:100',
             'contact_motto'       => 'nullable|string|max:255',
+            'social_facebook'     => 'nullable|url|max:500',
+            'social_twitter'      => 'nullable|url|max:500',
+            'social_instagram'    => 'nullable|url|max:500',
+            'social_youtube'      => 'nullable|url|max:500',
+            'social_whatsapp'     => 'nullable|string|max:20',
         ]);
 
-        foreach ($validated as $key => $value) {
-            SiteSetting::setValue($key, $value, 'contact');
+        $contactFields = ['contact_email','contact_phone','contact_address','contact_school_name','contact_school_level','contact_motto'];
+        foreach ($contactFields as $key) {
+            SiteSetting::setValue($key, $request->input($key), 'contact');
+        }
+
+        $socialFields = ['social_facebook','social_twitter','social_instagram','social_youtube','social_whatsapp'];
+        foreach ($socialFields as $key) {
+            SiteSetting::setValue($key, $request->input($key), 'social');
         }
 
         return redirect()->route('admin.settings.contact')->with('success', 'Informasi kontak berhasil diperbarui!');
@@ -146,6 +160,7 @@ class AdminSettingController extends Controller
             'registration_closed_message'    => 'nullable|string|max:500',
             'registration_google_form_baru'  => 'nullable|url|max:500',
             'registration_google_form_pindahan' => 'nullable|url|max:500',
+            'registration_pindahan_open'        => 'nullable|in:0,1',
         ]);
 
         SiteSetting::setValue('registration_open', $request->has('registration_open') ? '1' : '0', 'registration');
@@ -155,6 +170,7 @@ class AdminSettingController extends Controller
         SiteSetting::setValue('registration_closed_message', $request->input('registration_closed_message'), 'registration');
         SiteSetting::setValue('registration_google_form_baru', $request->input('registration_google_form_baru'), 'registration');
         SiteSetting::setValue('registration_google_form_pindahan', $request->input('registration_google_form_pindahan'), 'registration');
+        SiteSetting::setValue('registration_pindahan_open', $request->has('registration_pindahan_open') ? '1' : '0', 'registration');
 
         return redirect()->route('admin.settings.registration')->with('success', 'Pengaturan pendaftaran berhasil diperbarui!');
     }

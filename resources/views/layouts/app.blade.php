@@ -950,12 +950,19 @@
                     <div class="col-lg-3 col-md-6 footer-col" style="margin-bottom: 2rem;">
                         <h5>Ikuti Kami</h5>
                         <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem;">Tetap terhubung dengan kami di media sosial</p>
+                        @php
+                            $sfb = $socialSettings['social_facebook'] ?? '';
+                            $stw = $socialSettings['social_twitter'] ?? '';
+                            $sig = $socialSettings['social_instagram'] ?? '';
+                            $syt = $socialSettings['social_youtube'] ?? '';
+                            $swa = $socialSettings['social_whatsapp'] ?? '';
+                        @endphp
                         <div class="social-icons">
-                            <a href="#" class="sc-facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="sc-twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="sc-instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="sc-youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
-                            <a href="#" class="sc-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            <a href="{{ $sfb ?: '#' }}" class="sc-facebook" title="Facebook" @if($sfb) target="_blank" rel="noopener" @endif><i class="fab fa-facebook-f"></i></a>
+                            <a href="{{ $stw ?: '#' }}" class="sc-twitter" title="Twitter" @if($stw) target="_blank" rel="noopener" @endif><i class="fab fa-twitter"></i></a>
+                            <a href="{{ $sig ?: '#' }}" class="sc-instagram" title="Instagram" @if($sig) target="_blank" rel="noopener" @endif><i class="fab fa-instagram"></i></a>
+                            <a href="{{ $syt ?: '#' }}" class="sc-youtube" title="YouTube" @if($syt) target="_blank" rel="noopener" @endif><i class="fab fa-youtube"></i></a>
+                            <a href="{{ $swa ? 'https://wa.me/'.preg_replace('/[^0-9]/', '', $swa) : '#' }}" class="sc-whatsapp" title="WhatsApp" @if($swa) target="_blank" rel="noopener" @endif><i class="fab fa-whatsapp"></i></a>
                         </div>
                     </div>
                 </div>

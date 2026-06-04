@@ -76,6 +76,37 @@
                         </div>
                     </div>
 
+                    {{-- Media Sosial --}}
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-header bg-white border-bottom">
+                            <h5 class="mb-0"><i class="fas fa-share-alt me-2 text-primary"></i> Media Sosial</h5>
+                        </div>
+                        <div class="card-body">
+                            <small class="text-muted d-block mb-3">Isi URL akun resmi sekolah. Kosongkan jika tidak ada.</small>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold"><i class="fab fa-facebook-f me-2 text-primary"></i>Facebook</label>
+                                <input type="url" name="social_facebook" class="form-control" value="{{ old('social_facebook', $settings['social_facebook'] ?? '') }}" placeholder="https://facebook.com/labitech">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold"><i class="fab fa-twitter me-2 text-info"></i>Twitter / X</label>
+                                <input type="url" name="social_twitter" class="form-control" value="{{ old('social_twitter', $settings['social_twitter'] ?? '') }}" placeholder="https://twitter.com/labitech">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold"><i class="fab fa-instagram me-2 text-danger"></i>Instagram</label>
+                                <input type="url" name="social_instagram" class="form-control" value="{{ old('social_instagram', $settings['social_instagram'] ?? '') }}" placeholder="https://instagram.com/labitech">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold"><i class="fab fa-youtube me-2 text-danger"></i>YouTube</label>
+                                <input type="url" name="social_youtube" class="form-control" value="{{ old('social_youtube', $settings['social_youtube'] ?? '') }}" placeholder="https://youtube.com/@labitech">
+                            </div>
+                            <div class="mb-0">
+                                <label class="form-label fw-bold"><i class="fab fa-whatsapp me-2 text-success"></i>WhatsApp</label>
+                                <input type="text" name="social_whatsapp" class="form-control" value="{{ old('social_whatsapp', $settings['social_whatsapp'] ?? '') }}" placeholder="628162626190">
+                                <small class="text-muted">Format angka saja, contoh: 628162626190</small>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary btn-lg">
                             <i class="fas fa-save me-2"></i> Simpan Perubahan

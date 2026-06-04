@@ -179,6 +179,25 @@
                     </div>
                 </div>
 
+                {{-- Toggle Penerimaan Pindahan --}}
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0"><i class="fas fa-exchange-alt me-2 text-info"></i> Penerimaan Siswa Pindahan</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="registration_pindahan_open" name="registration_pindahan_open" value="1"
+                                   {{ ($settings['registration_pindahan_open'] ?? '1') === '1' ? 'checked' : '' }}
+                                   style="width: 3rem; height: 1.5rem;">
+                            <label class="form-check-label ms-2 fw-semibold fs-6" for="registration_pindahan_open">
+                                Penerimaan Pindahan Dibuka
+                            </label>
+                        </div>
+                        <small class="text-muted d-block mt-2">Jika dimatikan, kartu "Siswa Pindahan" tidak tampil di halaman pendaftaran.</small>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary px-4">
                     <i class="fas fa-save me-2"></i>Simpan Pengaturan
                 </button>

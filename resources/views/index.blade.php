@@ -27,9 +27,9 @@
                         {{-- Active Branch - clickable, links to branch detail page --}}
                         @php $branchColor = $branch->color ?: 'rgba(59,89,152,0.95)'; @endphp
                         <a href="{{ $branch->slug ? route('branch.show', $branch->slug) : '#' }}"
-                           style="background:{{ $branchColor }}; color:white; border-radius:10px; padding:1rem; display:flex; align-items:center; gap:0.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.2); transition:all 0.3s; cursor:pointer; text-decoration:none;"
-                           onmouseover="this.style.opacity='0.85'; this.style.transform='translateY(-5px)'"
-                           onmouseout="this.style.opacity='1'; this.style.transform='translateY(0)'">
+                           style="background:{{ $branchColor }}; color:white; border-radius:10px; padding:1rem; display:flex; align-items:center; gap:0.75rem; box-shadow:0 4px 15px rgba(0,0,0,0.2); transition:all 0.2s; cursor:pointer; text-decoration:none; border:2px solid rgba(255,255,255,0.2);"
+                           onmouseover="this.style.filter='brightness(1.15)'"
+                           onmouseout="this.style.filter='brightness(1)'">
                             <div style="background:rgba(255,255,255,0.2); width:50px; height:50px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden;">
                                 @if($branch->logo)
                                     <img src="{{ asset('storage/'.$branch->logo) }}" style="width:40px; height:40px; object-fit:contain;" alt="Logo">
@@ -41,7 +41,6 @@
                                 <p style="margin:0; font-size:0.65rem; font-weight:600; opacity:0.8; letter-spacing:0.3px;">SD Labitech Insan Mulia</p>
                                 <p style="margin:0.2rem 0 0; font-size:0.85rem; font-weight:700;">{{ strtoupper($branch->name) }}</p>
                             </div>
-                            <i class="fas fa-chevron-right" style="opacity:0.6; font-size:0.75rem;"></i>
                         </a>
                         @else
                         {{-- Disabled Branch - Coming Soon, not clickable --}}
@@ -197,7 +196,7 @@
         <div style="margin-top: 4rem;">
             <h2 style="text-align: center; font-size: 2rem; color: var(--dark-blue); font-weight: 700; margin-bottom: 0.5rem;">7 Kompetensi Unggulan</h2>
             <p style="text-align:center; color:#888; margin-bottom:2.5rem;">Program pengembangan siswa menuju profil lulusan <strong>Sang Juara</strong></p>
-            <div class="row g-3">
+            <div class="row g-3 justify-content-center">
                 @php
                 $kompetensi = [
                     ['icon'=>'fas fa-crown',        'judul'=>'Leadership',    'desc'=>'Membentuk jiwa kepemimpinan sejak dini melalui program organisasi dan kegiatan terstruktur.'],
@@ -256,7 +255,7 @@
         <div style="margin-top:4rem; padding:3rem; background:linear-gradient(135deg,var(--dark-blue),#2d5a8c); border-radius:14px; color:white;">
             <h2 style="text-align:center; font-size:1.8rem; font-weight:800; margin-bottom:0.5rem;">Profil Lulusan</h2>
             <p style="text-align:center; opacity:0.8; margin-bottom:2rem;">7 Jaminan Kompetensi Siswa SDIT Labitech Insan Mulia</p>
-            <div class="row g-3">
+            <div class="row g-3 justify-content-center">
                 @php
                 $lulusan = [
                     ['no'=>'01', 'text'=>'Memiliki Akhlak Mulia'],

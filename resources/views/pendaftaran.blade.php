@@ -86,6 +86,7 @@
                 </div>
 
                 {{-- Siswa Pindahan --}}
+                @if(\App\Models\SiteSetting::getValue('registration_pindahan_open', '1') === '1')
                 <div class="col-md-5">
                     <div class="card border-0 shadow h-100" style="border-radius: 16px; overflow: hidden;">
                         <div style="background: linear-gradient(135deg, #2d5a8c, #3d7ab5); padding: 2rem; text-align: center; color: white;">
@@ -115,6 +116,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
             </div>
 
