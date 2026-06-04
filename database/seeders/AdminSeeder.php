@@ -10,7 +10,9 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         // Hapus semua akun admin lama
+        \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0');
         User::truncate();
+        \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $admins = [
             [
