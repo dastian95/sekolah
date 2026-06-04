@@ -512,7 +512,7 @@
                 </li>
                 <li>
                     <a class="admin-nav-link {{ request()->routeIs('admin.certificates.*') ? 'active' : '' }}" href="{{ route('admin.certificates.index') }}">
-                        <i class="fas fa-certificate"></i> Certificates
+                        <i class="fas fa-certificate"></i> Certificate
                     </a>
                 </li>
                 <li class="nav-item dropdown">

@@ -860,7 +860,7 @@
                             <a class="nav-link {{ request()->routeIs('kemitraan') ? 'active' : '' }}" href="{{ route('kemitraan') }}">Kemitraan</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('certificates') ? 'active' : '' }}" href="{{ route('certificates') }}">Certificates</a>
+                            <a class="nav-link {{ request()->routeIs('certificates') ? 'active' : '' }}" href="{{ route('certificates') }}">Certificate</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('pendaftaran') ? 'active' : '' }}" href="{{ route('pendaftaran') }}">
