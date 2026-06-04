@@ -93,8 +93,8 @@ class AdminSettingController extends Controller
             'homepage_banner_title'    => 'nullable|string|max:255',
             'homepage_banner_link'     => 'nullable|string|max:500',
             'homepage_video_url'       => 'nullable|url|max:500',
-            'homepage_hero_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'homepage_about_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'homepage_hero_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'homepage_about_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'homepage_video_file'      => 'nullable|mimes:mp4,webm,ogg|max:102400',
         ]);
 
