@@ -38,7 +38,7 @@
                                 @endif
                             </div>
                             <div style="flex-grow:1;">
-                                <p style="margin:0; font-size:0.65rem; font-weight:600; opacity:0.8; letter-spacing:0.3px;">{{ $contactSettings['contact_school_name'] ?? 'SD Labitech Insan Mulia' }}</p>
+                                <p style="margin:0; font-size:0.65rem; font-weight:600; opacity:0.8; letter-spacing:0.3px;">{{ $branch->school_name ?: 'SD Labitech Insan Mulia' }}</p>
                                 <p style="margin:0.2rem 0 0; font-size:0.85rem; font-weight:700;">{{ strtoupper($branch->name) }}</p>
                             </div>
                         </a>

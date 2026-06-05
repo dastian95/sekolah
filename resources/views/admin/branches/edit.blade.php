@@ -62,6 +62,13 @@
                                     <small class="text-muted">Warna utama halaman cabang ini</small>
                                 </div>
                                 <div class="col-12 mb-3">
+                                    <label class="form-label fw-bold">Nama Sekolah</label>
+                                    <input type="text" name="school_name" class="form-control"
+                                           value="{{ old('school_name', $branch->school_name) }}"
+                                           placeholder="Contoh: SD Labitech Insan Mulia">
+                                    <small class="text-muted">Ditampilkan di atas nama cabang pada kartu homepage</small>
+                                </div>
+                                <div class="col-12 mb-3">
                                     <label class="form-label fw-bold">Deskripsi</label>
                                     <textarea name="description" class="form-control" rows="4"
                                               placeholder="Tuliskan deskripsi singkat tentang cabang ini...">{{ old('description', $branch->description) }}</textarea>

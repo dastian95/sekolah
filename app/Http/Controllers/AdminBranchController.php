@@ -48,6 +48,7 @@ class AdminBranchController extends Controller
     {
         $request->validate([
             'name'        => 'required|string|max:100',
+            'school_name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
             'address'     => 'nullable|string|max:500',
             'phone'       => 'nullable|string|max:30',
@@ -56,7 +57,7 @@ class AdminBranchController extends Controller
             'logo'        => 'nullable|image|mimes:png,jpg,jpeg,webp|max:1024',
         ]);
 
-        $data = $request->only(['name', 'description', 'address', 'phone', 'email', 'color']);
+        $data = $request->only(['name', 'school_name', 'description', 'address', 'phone', 'email', 'color']);
 
         // Re-generate slug only if name changed
         if ($branch->name !== $request->name) {
