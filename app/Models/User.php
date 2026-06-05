@@ -21,7 +21,19 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'is_active',
     ];
+
+    public function isSuperadmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
+
+    public function isPrimarySuperadmin(): bool
+    {
+        return $this->name === env('SUPERADMIN_1_NAME');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

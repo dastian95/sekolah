@@ -515,6 +515,13 @@
                         <i class="fas fa-certificate"></i> Certificate
                     </a>
                 </li>
+                @if(auth()->user()?->isSuperadmin())
+                <li>
+                    <a class="admin-nav-link {{ request()->routeIs('admin.superadmin.*') ? 'active' : '' }}" href="{{ route('admin.superadmin.users.index') }}">
+                        <i class="fas fa-users-cog"></i> Pengguna
+                    </a>
+                </li>
+                @endif
                 <li class="nav-item dropdown">
                     <a class="admin-nav-link dropdown-toggle {{ request()->routeIs('admin.settings.*') || request()->routeIs('admin.branches.*') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-cog"></i> Pengaturan

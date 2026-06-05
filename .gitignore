@@ -29,6 +29,7 @@ storage/framework/cache/data/*
 storage/logs/*.log
 Thumbs.db
 SERVER_INFO.md
+*.sql
 
 # File upload dari admin (foto, video, PDF) — tidak di-commit ke git
 /storage/app/public/settings/*

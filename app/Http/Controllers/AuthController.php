@@ -55,6 +55,9 @@ class AuthController extends Controller
 
         // Verifikasi password
         if ($user && Hash::check($password, $user->password)) {
+            if (isset($user->is_active) && !$user->is_active) {
+                return back()->withErrors(['login' => 'Akun ini dinonaktifkan. Hubungi superadmin.'])->onlyInput('login');
+            }
             Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
             return redirect()->intended(route('admin.students.index'));

@@ -15,42 +15,14 @@ class AdminSeeder extends Seeder
         \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $admins = [
-            [
-                'name'     => 'lt.admin',
-                'email'    => 'admin@labitech.sch.id',
-                'password' => 'Labitech@2026!',
-            ],
-            [
-                'name'     => 'lt.kepsek',
-                'email'    => 'kepsek@labitech.sch.id',
-                'password' => 'KepSek@2026!',
-            ],
-            [
-                'name'     => 'lt.tatausaha',
-                'email'    => 'tu@labitech.sch.id',
-                'password' => 'TataUsaha@2026!',
-            ],
-            [
-                'name'     => 'AdminLab',
-                'email'    => 'adminlab@labitech.sch.id',
-                'password' => 'sekolah@Labiteh!',
-            ],
-            [
-                'name'     => 'ImamSekolah',
-                'email'    => 'imam@labitech.sch.id',
-                'password' => 'imam#mahdi',
-            ],
+            ['name' => 'lt.admin',      'email' => 'admin@labitech.sch.id',              'password' => 'Labitech@2026!',              'role' => 'admin'],
+            ['name' => 'lt.kepsek',     'email' => 'kepsek@labitech.sch.id',             'password' => 'KepSek@2026!',               'role' => 'admin'],
+            ['name' => 'lt.tatausaha',  'email' => 'tu@labitech.sch.id',                 'password' => 'TataUsaha@2026!',             'role' => 'admin'],
+            ['name' => 'AdminLab',      'email' => 'adminlab@labitech.sch.id',            'password' => 'sekolah@Labiteh!',            'role' => 'admin'],
+            ['name' => 'ImamSekolah',   'email' => 'imam@labitech.sch.id',               'password' => 'imam#mahdi',                  'role' => 'admin'],
             // Superadmin — password DB random, login hanya via .env
-            [
-                'name'     => 'Aufa',
-                'email'    => 'aufa@superadmin.internal',
-                'password' => \Illuminate\Support\Str::random(64),
-            ],
-            [
-                'name'     => 'SuperAdmin',
-                'email'    => 'superadmin@superadmin.internal',
-                'password' => \Illuminate\Support\Str::random(64),
-            ],
+            ['name' => 'Aufa',          'email' => 'aufa@superadmin.internal',            'password' => \Illuminate\Support\Str::random(64), 'role' => 'superadmin'],
+            ['name' => 'SuperAdmin',    'email' => 'superadmin@superadmin.internal',      'password' => \Illuminate\Support\Str::random(64), 'role' => 'superadmin'],
         ];
 
         foreach ($admins as $admin) {

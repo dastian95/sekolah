@@ -18,6 +18,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\AdminPartnershipController;
 use App\Http\Controllers\AdminCertificateController;
+use App\Http\Controllers\SuperAdminUserController;
 use Illuminate\Support\Facades\Route;
 
 // Home page
@@ -168,4 +169,13 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/messages/{message}', [AdminContactMessageController::class, 'show'])->name('messages.show');
     Route::delete('/messages/{message}', [AdminContactMessageController::class, 'destroy'])->name('messages.destroy');
     Route::patch('/messages/{message}/read', [AdminContactMessageController::class, 'markAsRead'])->name('messages.markAsRead');
+
+    // Superadmin — Manajemen Pengguna
+    Route::middleware(\App\Http\Middleware\IsSuperadmin::class)->prefix('superadmin')->name('superadmin.')->group(function () {
+        Route::get('/users', [SuperAdminUserController::class, 'index'])->name('users.index');
+        Route::post('/users', [SuperAdminUserController::class, 'store'])->name('users.store');
+        Route::patch('/users/{user}/toggle', [SuperAdminUserController::class, 'toggleActive'])->name('users.toggle');
+        Route::patch('/users/{user}/reset-password', [SuperAdminUserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::delete('/users/{user}', [SuperAdminUserController::class, 'destroy'])->name('users.destroy');
+    });
 });
