@@ -65,7 +65,7 @@
                 @php $heroImage = $homepageSettings['homepage_hero_image'] ?? null; @endphp
                 @if($heroImage)
                     <img src="{{ asset('storage/'.$heroImage) }}" alt="SD Labitech Insan Mulia"
-                         style="width:100%; height:260px; border-radius:12px; object-fit:cover; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
+                         style="width:100%; height:auto; border-radius:12px; object-fit:contain; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
                 @else
                     <div style="width:100%; height:260px; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
                         <i class="fas fa-camera" style="font-size:2.5rem; color:rgba(255,255,255,0.4);"></i>
