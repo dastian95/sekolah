@@ -72,7 +72,8 @@
                     ]);
                 @endphp
                 @if(count($heroSlides) > 0)
-                <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000"
+                @php $heroInterval = (int)($homepageSettings['homepage_hero_interval'] ?? 4) * 1000; @endphp
+                <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
                      style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
                     @if(count($heroSlides) > 1)
                     <div class="carousel-indicators">

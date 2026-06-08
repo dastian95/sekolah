@@ -137,6 +137,15 @@
                                 @endforeach
                             </div>
                             <small class="text-muted d-block mt-2">Format: JPG, PNG, WebP. Maks 5MB per foto. Ukuran ideal: 800×500px.</small>
+
+                            <div class="mt-3 d-flex align-items-center gap-3">
+                                <label class="fw-bold mb-0 text-nowrap">Ganti foto setiap</label>
+                                <input type="number" name="homepage_hero_interval"
+                                       class="form-control form-control-sm" style="width:80px;"
+                                       min="1" max="30"
+                                       value="{{ old('homepage_hero_interval', $settings['homepage_hero_interval'] ?? 4) }}">
+                                <span class="text-muted">detik</span>
+                            </div>
                         </div>
                     </div>
 
