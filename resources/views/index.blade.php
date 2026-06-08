@@ -72,45 +72,32 @@
                     ]);
                     $heroInterval = (int)($homepageSettings['homepage_hero_interval'] ?? 4) * 1000;
                     $heroAnim     = $homepageSettings['homepage_hero_animation'] ?? 'slide';
-                    $animClass    = match($heroAnim) {
-                        'fade'      => 'hero-anim-fade',
-                        'shape-out' => 'hero-anim-shape-out',
-                        'shape-in'  => 'hero-anim-shape-in',
+                    $carouselExtra = match($heroAnim) {
+                        'fade'      => 'carousel-fade',
+                        'shape-in'  => 'carousel-fade hero-shape-in',
+                        'shape-out' => 'carousel-fade hero-shape-out',
                         default     => '',
                     };
                 @endphp
                 @if(count($heroSlides) > 0)
                 <style>
-                    #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height: 100%; }
-                    #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.1); }
-                    /* Fade */
-                    .hero-anim-fade .carousel-item { opacity:0; transition:opacity 0.7s ease !important; transform:none !important; }
-                    .hero-anim-fade .carousel-item.active { opacity:1; }
-                    .hero-anim-fade .carousel-item-next, .hero-anim-fade .carousel-item-prev { transform:none !important; }
-                    .hero-anim-fade .carousel-item.active.carousel-item-start,
-                    .hero-anim-fade .carousel-item.active.carousel-item-end { opacity:0; z-index:0; }
-                    .hero-anim-fade .carousel-item-next.carousel-item-start,
-                    .hero-anim-fade .carousel-item-prev.carousel-item-end { opacity:1; z-index:1; }
-                    /* Shape Ke Dalam */
-                    .hero-anim-shape-in .carousel-item { transition:none !important; transform:none !important; opacity:1 !important; }
-                    .hero-anim-shape-in .carousel-item.active.carousel-item-start,
-                    .hero-anim-shape-in .carousel-item.active.carousel-item-end { z-index:3; animation:heroShapeIn 0.9s ease forwards; }
-                    .hero-anim-shape-in .carousel-item-next, .hero-anim-shape-in .carousel-item-prev { z-index:1; transform:none !important; }
-                    @@keyframes heroShapeIn {
-                        from { clip-path: circle(150% at 50% 50%); }
-                        to   { clip-path: circle(0% at 50% 50%); }
-                    }
-                    /* Shape Ke Luar */
-                    .hero-anim-shape-out .carousel-item { transition:none !important; transform:none !important; opacity:1 !important; }
-                    .hero-anim-shape-out .carousel-item.active { z-index:1; }
-                    .hero-anim-shape-out .carousel-item-next.carousel-item-start,
-                    .hero-anim-shape-out .carousel-item-prev.carousel-item-end { z-index:3; animation:heroShapeOut 0.9s ease forwards; }
-                    @@keyframes heroShapeOut {
-                        from { clip-path: circle(0% at 50% 50%); }
-                        to   { clip-path: circle(150% at 50% 50%); }
-                    }
+                    #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height:100%; }
+                    #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.08); }
+                    /* Shape Ke Dalam: slide aktif menutup ke tengah via clip-path transition */
+                    .hero-shape-in .carousel-item.active { clip-path:circle(150% at 50% 50%); transition:clip-path 0.85s ease !important; opacity:1 !important; }
+                    .hero-shape-in .carousel-item.active.carousel-item-start,
+                    .hero-shape-in .carousel-item.active.carousel-item-end { clip-path:circle(0% at 50% 50%); opacity:1 !important; z-index:2; }
+                    .hero-shape-in .carousel-item-next, .hero-shape-in .carousel-item-prev { opacity:1 !important; }
+                    .hero-shape-in .carousel-item-next.carousel-item-start,
+                    .hero-shape-in .carousel-item-prev.carousel-item-end { opacity:1 !important; z-index:1; }
+                    /* Shape Ke Luar: slide baru meluas dari tengah ke luar */
+                    .hero-shape-out .carousel-item-next, .hero-shape-out .carousel-item-prev { clip-path:circle(0% at 50% 50%); transition:clip-path 0.85s ease !important; opacity:1 !important; z-index:2; }
+                    .hero-shape-out .carousel-item-next.carousel-item-start,
+                    .hero-shape-out .carousel-item-prev.carousel-item-end { clip-path:circle(150% at 50% 50%); opacity:1 !important; }
+                    .hero-shape-out .carousel-item.active.carousel-item-start,
+                    .hero-shape-out .carousel-item.active.carousel-item-end { opacity:1 !important; z-index:1; }
                 </style>
-                <div id="heroCarousel" class="carousel slide {{ $animClass }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
+                <div id="heroCarousel" class="carousel slide {{ $carouselExtra }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
                      style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; aspect-ratio:16/9;">
                     @if(count($heroSlides) > 1)
                     <div class="carousel-indicators">
