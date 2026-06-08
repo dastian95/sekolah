@@ -117,7 +117,7 @@ class AdminSettingController extends Controller
             'homepage_video_file'      => 'nullable|mimes:mp4,webm,ogg|max:102400',
         ]);
 
-        $textFields = ['homepage_banner_subtitle', 'homepage_banner_title', 'homepage_banner_link', 'homepage_video_url', 'homepage_hero_interval'];
+        $textFields = ['homepage_banner_subtitle', 'homepage_banner_title', 'homepage_banner_link', 'homepage_video_url', 'homepage_hero_interval', 'homepage_hero_animation'];
         foreach ($textFields as $key) {
             SiteSetting::setValue($key, $request->input($key), 'homepage');
         }

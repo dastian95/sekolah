@@ -72,8 +72,45 @@
                     ]);
                 @endphp
                 @if(count($heroSlides) > 0)
-                @php $heroInterval = (int)($homepageSettings['homepage_hero_interval'] ?? 4) * 1000; @endphp
-                <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
+                @php
+                    $heroInterval = (int)($homepageSettings['homepage_hero_interval'] ?? 4) * 1000;
+                    $heroAnim = $homepageSettings['homepage_hero_animation'] ?? 'slide';
+                    $carouselClass = 'carousel slide';
+                    if ($heroAnim === 'fade') $carouselClass = 'carousel carousel-fade';
+                    if ($heroAnim === 'shape-out') $carouselClass = 'carousel carousel-fade hero-shape-out';
+                    if ($heroAnim === 'shape-in')  $carouselClass = 'carousel carousel-fade hero-shape-in';
+                @endphp
+                <style>
+                    /* Shape Ke Dalam: lingkaran menutup ke tengah */
+                    .hero-shape-in .carousel-item.active.carousel-item-start,
+                    .hero-shape-in .carousel-item.active.carousel-item-end {
+                        opacity: 1 !important; z-index: 3 !important;
+                        animation: heroShapeIn 0.9s ease forwards;
+                    }
+                    .hero-shape-in .carousel-item-next.carousel-item-start,
+                    .hero-shape-in .carousel-item-prev.carousel-item-end {
+                        opacity: 1 !important; z-index: 1 !important;
+                    }
+                    @keyframes heroShapeIn {
+                        from { clip-path: circle(150% at 50% 50%); }
+                        to   { clip-path: circle(0% at 50% 50%); }
+                    }
+                    /* Shape Ke Luar: lingkaran meluas dari tengah */
+                    .hero-shape-out .carousel-item.active.carousel-item-start,
+                    .hero-shape-out .carousel-item.active.carousel-item-end {
+                        opacity: 1 !important; z-index: 1 !important;
+                    }
+                    .hero-shape-out .carousel-item-next.carousel-item-start,
+                    .hero-shape-out .carousel-item-prev.carousel-item-end {
+                        opacity: 1 !important; z-index: 3 !important;
+                        animation: heroShapeOut 0.9s ease forwards;
+                    }
+                    @keyframes heroShapeOut {
+                        from { clip-path: circle(0% at 50% 50%); }
+                        to   { clip-path: circle(150% at 50% 50%); }
+                    }
+                </style>
+                <div id="heroCarousel" class="{{ $carouselClass }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
                      style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
                     @if(count($heroSlides) > 1)
                     <div class="carousel-indicators">

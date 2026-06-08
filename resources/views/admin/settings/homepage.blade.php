@@ -138,13 +138,25 @@
                             </div>
                             <small class="text-muted d-block mt-2">Format: JPG, PNG, WebP. Maks 5MB per foto. Ukuran ideal: 800×500px.</small>
 
-                            <div class="mt-3 d-flex align-items-center gap-3">
-                                <label class="fw-bold mb-0 text-nowrap">Ganti foto setiap</label>
-                                <input type="number" name="homepage_hero_interval"
-                                       class="form-control form-control-sm" style="width:80px;"
-                                       min="1" max="30"
-                                       value="{{ old('homepage_hero_interval', $settings['homepage_hero_interval'] ?? 4) }}">
-                                <span class="text-muted">detik</span>
+                            <div class="mt-3 row g-3 align-items-center">
+                                <div class="col-auto d-flex align-items-center gap-2">
+                                    <label class="fw-bold mb-0 text-nowrap">Ganti setiap</label>
+                                    <input type="number" name="homepage_hero_interval"
+                                           class="form-control form-control-sm" style="width:75px;"
+                                           min="1" max="30"
+                                           value="{{ old('homepage_hero_interval', $settings['homepage_hero_interval'] ?? 4) }}">
+                                    <span class="text-muted">detik</span>
+                                </div>
+                                <div class="col-auto d-flex align-items-center gap-2">
+                                    <label class="fw-bold mb-0 text-nowrap">Animasi</label>
+                                    <select name="homepage_hero_animation" class="form-select form-select-sm" style="width:auto;">
+                                        @php $anim = $settings['homepage_hero_animation'] ?? 'slide'; @endphp
+                                        <option value="slide"      {{ $anim === 'slide'      ? 'selected' : '' }}>Geser (slide)</option>
+                                        <option value="fade"       {{ $anim === 'fade'       ? 'selected' : '' }}>Pudar (fade)</option>
+                                        <option value="shape-out"  {{ $anim === 'shape-out'  ? 'selected' : '' }}>Shape — lingkaran keluar dari tengah</option>
+                                        <option value="shape-in"   {{ $anim === 'shape-in'   ? 'selected' : '' }}>Shape — lingkaran menutup ke tengah</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
