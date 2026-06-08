@@ -92,29 +92,51 @@
                         </div>
                     </div>
 
-                    {{-- Foto Hero --}}
+                    {{-- Foto Hero Carousel --}}
                     <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-header bg-white border-bottom">
-                            <h5 class="mb-0"><i class="fas fa-image me-2 text-primary"></i> Foto Sekolah (Hero)</h5>
+                        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-images me-2 text-primary"></i> Foto Slideshow Hero</h5>
+                            <span class="badge bg-primary">Maks 5 Foto</span>
                         </div>
                         <div class="card-body">
-                            @php $heroImage = $settings['homepage_hero_image'] ?? null; @endphp
-                            @if($heroImage)
-                                <div class="mb-3">
-                                    <img src="{{ asset('storage/'.$heroImage) }}" alt="Foto Hero"
-                                         style="height:160px; width:auto; border-radius:10px; object-fit:cover; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-                                    <p class="small text-muted mt-1 mb-0">Foto saat ini. Upload baru untuk mengganti.</p>
+                            <p class="text-muted small mb-3"><i class="fas fa-info-circle me-1"></i> Foto akan tampil bergantian otomatis di homepage. Upload minimal 1 foto. Kosongkan slot yang tidak dipakai.</p>
+
+                            @php
+                                $heroSlots = [
+                                    'homepage_hero_image'   => 'Foto 1 (Utama)',
+                                    'homepage_hero_image_2' => 'Foto 2',
+                                    'homepage_hero_image_3' => 'Foto 3',
+                                    'homepage_hero_image_4' => 'Foto 4',
+                                    'homepage_hero_image_5' => 'Foto 5',
+                                ];
+                            @endphp
+
+                            <div class="row g-3">
+                                @foreach($heroSlots as $key => $label)
+                                @php $img = $settings[$key] ?? null; @endphp
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded border" style="background:#fafafa;">
+                                        <p class="fw-bold small mb-2">{{ $label }}</p>
+                                        @if($img)
+                                            <img src="{{ asset('storage/'.$img) }}" alt="{{ $label }}"
+                                                 style="height:110px; width:100%; object-fit:cover; border-radius:8px; margin-bottom:0.5rem;">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" name="delete_{{ $key }}" id="del_{{ $key }}" value="1">
+                                                <label class="form-check-label text-danger small" for="del_{{ $key }}">Hapus foto ini</label>
+                                            </div>
+                                        @else
+                                            <div class="mb-2 text-center text-muted" style="height:80px; background:#f0f0f0; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                                <i class="fas fa-camera"></i>
+                                            </div>
+                                        @endif
+                                        <input type="file" name="{{ $key }}" class="form-control form-control-sm @error($key) is-invalid @enderror"
+                                               accept="image/jpeg,image/png,image/webp">
+                                        @error($key)<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
                                 </div>
-                            @else
-                                <div class="mb-3 p-4 rounded text-center text-muted" style="background:#f8f9fa; border:2px dashed #dee2e6;">
-                                    <i class="fas fa-camera fa-2x mb-2 d-block"></i>
-                                    Belum ada foto. Upload untuk menampilkan foto di hero homepage.
-                                </div>
-                            @endif
-                            <input type="file" name="homepage_hero_image" class="form-control @error('homepage_hero_image') is-invalid @enderror"
-                                   accept="image/jpeg,image/png,image/webp">
-                            @error('homepage_hero_image')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            <small class="text-muted">Format: JPG, PNG, WebP. Maks 2MB. Ukuran ideal: 800×500px.</small>
+                                @endforeach
+                            </div>
+                            <small class="text-muted d-block mt-2">Format: JPG, PNG, WebP. Maks 5MB per foto. Ukuran ideal: 800×500px.</small>
                         </div>
                     </div>
 

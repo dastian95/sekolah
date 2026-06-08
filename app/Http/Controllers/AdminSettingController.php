@@ -108,6 +108,10 @@ class AdminSettingController extends Controller
             'homepage_banner_link'     => 'nullable|string|max:500',
             'homepage_video_url'       => 'nullable|url|max:500',
             'homepage_hero_image'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'homepage_hero_image_2'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'homepage_hero_image_3'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'homepage_hero_image_4'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'homepage_hero_image_5'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'homepage_about_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'homepage_video_file'      => 'nullable|mimes:mp4,webm,ogg|max:102400',
         ]);
@@ -117,12 +121,19 @@ class AdminSettingController extends Controller
             SiteSetting::setValue($key, $request->input($key), 'homepage');
         }
 
-        foreach (['homepage_hero_image', 'homepage_about_image'] as $key) {
+        $imageKeys = ['homepage_hero_image', 'homepage_hero_image_2', 'homepage_hero_image_3', 'homepage_hero_image_4', 'homepage_hero_image_5', 'homepage_about_image'];
+        foreach ($imageKeys as $key) {
             if ($request->hasFile($key)) {
                 $old = SiteSetting::getValue($key);
                 if ($old) \Illuminate\Support\Facades\Storage::disk('public')->delete($old);
                 $path = $request->file($key)->store('settings', 'public');
                 SiteSetting::setValue($key, $path, 'homepage');
+            }
+            // Hapus gambar jika checkbox delete dicentang
+            if ($request->input('delete_' . $key)) {
+                $old = SiteSetting::getValue($key);
+                if ($old) \Illuminate\Support\Facades\Storage::disk('public')->delete($old);
+                SiteSetting::setValue($key, null, 'homepage');
             }
         }
 

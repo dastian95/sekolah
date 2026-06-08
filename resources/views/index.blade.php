@@ -61,16 +61,50 @@
 
             <!-- Right Column - Content & CTA -->
             <div class="col-lg-7" style="padding: 2rem; display: flex; flex-direction: column; justify-content: center;">
-                {{-- Hero Image Slot --}}
-                @php $heroImage = $homepageSettings['homepage_hero_image'] ?? null; @endphp
-                @if($heroImage)
-                    <img src="{{ asset('storage/'.$heroImage) }}" alt="SD Labitech Insan Mulia"
-                         style="width:100%; height:auto; border-radius:12px; object-fit:contain; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
+                {{-- Hero Carousel --}}
+                @php
+                    $heroSlides = array_filter([
+                        $homepageSettings['homepage_hero_image']   ?? null,
+                        $homepageSettings['homepage_hero_image_2'] ?? null,
+                        $homepageSettings['homepage_hero_image_3'] ?? null,
+                        $homepageSettings['homepage_hero_image_4'] ?? null,
+                        $homepageSettings['homepage_hero_image_5'] ?? null,
+                    ]);
+                @endphp
+                @if(count($heroSlides) > 0)
+                <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000"
+                     style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
+                    @if(count($heroSlides) > 1)
+                    <div class="carousel-indicators">
+                        @foreach(array_values($heroSlides) as $i => $slide)
+                        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $i }}"
+                                {{ $i === 0 ? 'class=active aria-current=true' : '' }}
+                                aria-label="Slide {{ $i + 1 }}"></button>
+                        @endforeach
+                    </div>
+                    @endif
+                    <div class="carousel-inner">
+                        @foreach(array_values($heroSlides) as $i => $slide)
+                        <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+                            <img src="{{ asset('storage/'.$slide) }}" alt="Sekolah Labitech"
+                                 style="width:100%; height:auto; object-fit:contain; display:block;">
+                        </div>
+                        @endforeach
+                    </div>
+                    @if(count($heroSlides) > 1)
+                    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                    @endif
+                </div>
                 @else
                     <div style="width:100%; height:260px; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
                         <i class="fas fa-camera" style="font-size:2.5rem; color:rgba(255,255,255,0.4);"></i>
                         <p style="color:rgba(255,255,255,0.6); margin:0; font-size:0.9rem; font-weight:600;">Foto Sekolah</p>
-                        <p style="color:rgba(255,255,255,0.35); margin:0; font-size:0.72rem;">Foto Sekolah</p>
+                        <p style="color:rgba(255,255,255,0.35); margin:0; font-size:0.72rem;">Upload foto di Admin → Pengaturan → Halaman Utama</p>
                     </div>
                 @endif
                 
