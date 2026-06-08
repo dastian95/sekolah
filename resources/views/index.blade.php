@@ -70,48 +70,48 @@
                         $homepageSettings['homepage_hero_image_4'] ?? null,
                         $homepageSettings['homepage_hero_image_5'] ?? null,
                     ]);
+                    $heroInterval = (int)($homepageSettings['homepage_hero_interval'] ?? 4) * 1000;
+                    $heroAnim     = $homepageSettings['homepage_hero_animation'] ?? 'slide';
+                    $animClass    = match($heroAnim) {
+                        'fade'      => 'hero-anim-fade',
+                        'shape-out' => 'hero-anim-shape-out',
+                        'shape-in'  => 'hero-anim-shape-in',
+                        default     => '',
+                    };
                 @endphp
                 @if(count($heroSlides) > 0)
-                @php
-                    $heroInterval = (int)($homepageSettings['homepage_hero_interval'] ?? 4) * 1000;
-                    $heroAnim = $homepageSettings['homepage_hero_animation'] ?? 'slide';
-                    $carouselClass = 'carousel slide';
-                    if ($heroAnim === 'fade') $carouselClass = 'carousel carousel-fade';
-                    if ($heroAnim === 'shape-out') $carouselClass = 'carousel carousel-fade hero-shape-out';
-                    if ($heroAnim === 'shape-in')  $carouselClass = 'carousel carousel-fade hero-shape-in';
-                @endphp
                 <style>
-                    /* Shape Ke Dalam: lingkaran menutup ke tengah */
-                    .hero-shape-in .carousel-item.active.carousel-item-start,
-                    .hero-shape-in .carousel-item.active.carousel-item-end {
-                        opacity: 1 !important; z-index: 3 !important;
-                        animation: heroShapeIn 0.9s ease forwards;
-                    }
-                    .hero-shape-in .carousel-item-next.carousel-item-start,
-                    .hero-shape-in .carousel-item-prev.carousel-item-end {
-                        opacity: 1 !important; z-index: 1 !important;
-                    }
-                    @keyframes heroShapeIn {
+                    #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height: 100%; }
+                    #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.1); }
+                    /* Fade */
+                    .hero-anim-fade .carousel-item { opacity:0; transition:opacity 0.7s ease !important; transform:none !important; }
+                    .hero-anim-fade .carousel-item.active { opacity:1; }
+                    .hero-anim-fade .carousel-item-next, .hero-anim-fade .carousel-item-prev { transform:none !important; }
+                    .hero-anim-fade .carousel-item.active.carousel-item-start,
+                    .hero-anim-fade .carousel-item.active.carousel-item-end { opacity:0; z-index:0; }
+                    .hero-anim-fade .carousel-item-next.carousel-item-start,
+                    .hero-anim-fade .carousel-item-prev.carousel-item-end { opacity:1; z-index:1; }
+                    /* Shape Ke Dalam */
+                    .hero-anim-shape-in .carousel-item { transition:none !important; transform:none !important; opacity:1 !important; }
+                    .hero-anim-shape-in .carousel-item.active.carousel-item-start,
+                    .hero-anim-shape-in .carousel-item.active.carousel-item-end { z-index:3; animation:heroShapeIn 0.9s ease forwards; }
+                    .hero-anim-shape-in .carousel-item-next, .hero-anim-shape-in .carousel-item-prev { z-index:1; transform:none !important; }
+                    @@keyframes heroShapeIn {
                         from { clip-path: circle(150% at 50% 50%); }
                         to   { clip-path: circle(0% at 50% 50%); }
                     }
-                    /* Shape Ke Luar: lingkaran meluas dari tengah */
-                    .hero-shape-out .carousel-item.active.carousel-item-start,
-                    .hero-shape-out .carousel-item.active.carousel-item-end {
-                        opacity: 1 !important; z-index: 1 !important;
-                    }
-                    .hero-shape-out .carousel-item-next.carousel-item-start,
-                    .hero-shape-out .carousel-item-prev.carousel-item-end {
-                        opacity: 1 !important; z-index: 3 !important;
-                        animation: heroShapeOut 0.9s ease forwards;
-                    }
-                    @keyframes heroShapeOut {
+                    /* Shape Ke Luar */
+                    .hero-anim-shape-out .carousel-item { transition:none !important; transform:none !important; opacity:1 !important; }
+                    .hero-anim-shape-out .carousel-item.active { z-index:1; }
+                    .hero-anim-shape-out .carousel-item-next.carousel-item-start,
+                    .hero-anim-shape-out .carousel-item-prev.carousel-item-end { z-index:3; animation:heroShapeOut 0.9s ease forwards; }
+                    @@keyframes heroShapeOut {
                         from { clip-path: circle(0% at 50% 50%); }
                         to   { clip-path: circle(150% at 50% 50%); }
                     }
                 </style>
-                <div id="heroCarousel" class="{{ $carouselClass }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
-                     style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
+                <div id="heroCarousel" class="carousel slide {{ $animClass }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
+                     style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; aspect-ratio:16/9;">
                     @if(count($heroSlides) > 1)
                     <div class="carousel-indicators">
                         @foreach(array_values($heroSlides) as $i => $slide)
@@ -124,8 +124,7 @@
                     <div class="carousel-inner">
                         @foreach(array_values($heroSlides) as $i => $slide)
                         <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
-                            <img src="{{ asset('storage/'.$slide) }}" alt="Sekolah Labitech"
-                                 style="width:100%; height:auto; object-fit:contain; display:block;">
+                            <img src="{{ asset('storage/'.$slide) }}" alt="Sekolah Labitech">
                         </div>
                         @endforeach
                     </div>
@@ -139,7 +138,7 @@
                     @endif
                 </div>
                 @else
-                    <div style="width:100%; height:260px; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
+                    <div style="width:100%; aspect-ratio:16/9; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
                         <i class="fas fa-camera" style="font-size:2.5rem; color:rgba(255,255,255,0.4);"></i>
                         <p style="color:rgba(255,255,255,0.6); margin:0; font-size:0.9rem; font-weight:600;">Foto Sekolah</p>
                         <p style="color:rgba(255,255,255,0.35); margin:0; font-size:0.72rem;">Upload foto di Admin → Pengaturan → Halaman Utama</p>
