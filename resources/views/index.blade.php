@@ -81,8 +81,7 @@
                 @endphp
                 @if(count($heroSlides) > 0)
                 <style>
-                    #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height:100%; }
-                    #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.08); }
+                    #heroCarousel .carousel-item img { width:100%; height:auto; display:block; }
                     /* Shape Ke Dalam: slide aktif menutup ke tengah via clip-path transition */
                     .hero-shape-in .carousel-item.active { clip-path:circle(150% at 50% 50%); transition:clip-path 0.85s ease !important; opacity:1 !important; }
                     .hero-shape-in .carousel-item.active.carousel-item-start,
@@ -98,7 +97,7 @@
                     .hero-shape-out .carousel-item.active.carousel-item-end { opacity:1 !important; z-index:1; }
                 </style>
                 <div id="heroCarousel" class="carousel slide {{ $carouselExtra }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
-                     style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; aspect-ratio:16/9;">
+                     style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
                     @if(count($heroSlides) > 1)
                     <div class="carousel-indicators">
                         @foreach(array_values($heroSlides) as $i => $slide)
@@ -125,7 +124,7 @@
                     @endif
                 </div>
                 @else
-                    <div style="width:100%; aspect-ratio:16/9; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
+                    <div style="width:100%; height:260px; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0.75rem; border:2px dashed rgba(255,255,255,0.3);">
                         <i class="fas fa-camera" style="font-size:2.5rem; color:rgba(255,255,255,0.4);"></i>
                         <p style="color:rgba(255,255,255,0.6); margin:0; font-size:0.9rem; font-weight:600;">Foto Sekolah</p>
                         <p style="color:rgba(255,255,255,0.35); margin:0; font-size:0.72rem;">Upload foto di Admin → Pengaturan → Halaman Utama</p>
