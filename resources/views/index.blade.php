@@ -84,23 +84,21 @@
                     #heroCarousel { height:630px; }
                     #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height:100%; }
                     #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.06); }
-                    /* Slide default - percepat sedikit agar smooth */
-                    #heroCarousel .carousel-item { transition:transform 0.7s cubic-bezier(0.4,0,0.2,1) !important; }
-                    /* Shape Ke Dalam: slide aktif menutup ke tengah, halus */
-                    .hero-shape-in .carousel-item.active { clip-path:circle(150% at 50% 50%); transition:clip-path 1.1s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease !important; opacity:1 !important; }
-                    .hero-shape-in .carousel-item.active.carousel-item-start,
-                    .hero-shape-in .carousel-item.active.carousel-item-end { clip-path:circle(0% at 50% 50%); opacity:0.8 !important; z-index:2; }
-                    .hero-shape-in .carousel-item-next, .hero-shape-in .carousel-item-prev { opacity:1 !important; }
-                    .hero-shape-in .carousel-item-next.carousel-item-start,
-                    .hero-shape-in .carousel-item-prev.carousel-item-end { opacity:1 !important; z-index:1; }
-                    /* Shape Ke Luar: slide baru meluas dari tengah ke luar, halus */
-                    .hero-shape-out .carousel-item-next, .hero-shape-out .carousel-item-prev { clip-path:circle(0% at 50% 50%); transition:clip-path 1.1s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease !important; opacity:1 !important; z-index:2; }
-                    .hero-shape-out .carousel-item-next.carousel-item-start,
-                    .hero-shape-out .carousel-item-prev.carousel-item-end { clip-path:circle(150% at 50% 50%); opacity:1 !important; }
-                    .hero-shape-out .carousel-item.active.carousel-item-start,
-                    .hero-shape-out .carousel-item.active.carousel-item-end { opacity:0.8 !important; z-index:1; }
-                    /* Fade - sedikit lebih lambat agar smooth */
-                    .hero-anim-fade .carousel-item { transition-duration:0.8s !important; }
+                    /* Slide default */
+                    #heroCarousel.carousel-fade .carousel-item { transition-duration:0.8s !important; }
+                    /* Shape Ke Dalam — pakai ID agar specificity lebih tinggi */
+                    #heroCarousel.hero-shape-in .carousel-item.active { clip-path:circle(150% at 50% 50%); transition:clip-path 1.1s cubic-bezier(0.4,0,0.2,1) !important; opacity:1 !important; }
+                    #heroCarousel.hero-shape-in .carousel-item.active.carousel-item-start,
+                    #heroCarousel.hero-shape-in .carousel-item.active.carousel-item-end { clip-path:circle(0% at 50% 50%); opacity:1 !important; z-index:2; }
+                    #heroCarousel.hero-shape-in .carousel-item-next,
+                    #heroCarousel.hero-shape-in .carousel-item-prev { opacity:1 !important; z-index:1; }
+                    /* Shape Ke Luar — pakai ID agar specificity lebih tinggi */
+                    #heroCarousel.hero-shape-out .carousel-item-next,
+                    #heroCarousel.hero-shape-out .carousel-item-prev { clip-path:circle(0% at 50% 50%); transition:clip-path 1.1s cubic-bezier(0.4,0,0.2,1) !important; opacity:1 !important; z-index:2; }
+                    #heroCarousel.hero-shape-out .carousel-item-next.carousel-item-start,
+                    #heroCarousel.hero-shape-out .carousel-item-prev.carousel-item-end { clip-path:circle(150% at 50% 50%); }
+                    #heroCarousel.hero-shape-out .carousel-item.active.carousel-item-start,
+                    #heroCarousel.hero-shape-out .carousel-item.active.carousel-item-end { opacity:1 !important; z-index:1; }
                 </style>
                 <div id="heroCarousel" class="carousel slide {{ $carouselExtra }}" data-bs-ride="carousel" data-bs-interval="{{ $heroInterval }}"
                      style="border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin-bottom:1.5rem;">
