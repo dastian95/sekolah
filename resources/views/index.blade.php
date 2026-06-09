@@ -81,7 +81,9 @@
                 @endphp
                 @if(count($heroSlides) > 0)
                 <style>
-                    #heroCarousel .carousel-item img { width:100%; height:auto; display:block; }
+                    #heroCarousel { height:460px; }
+                    #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height:100%; }
+                    #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.06); }
                     /* Shape Ke Dalam: slide aktif menutup ke tengah via clip-path transition */
                     .hero-shape-in .carousel-item.active { clip-path:circle(150% at 50% 50%); transition:clip-path 0.85s ease !important; opacity:1 !important; }
                     .hero-shape-in .carousel-item.active.carousel-item-start,
