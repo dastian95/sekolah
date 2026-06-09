@@ -81,7 +81,7 @@
                 @endphp
                 @if(count($heroSlides) > 0)
                 <style>
-                    #heroCarousel { height:560px; }
+                    #heroCarousel { height:630px; }
                     #heroCarousel .carousel-inner, #heroCarousel .carousel-item { height:100%; }
                     #heroCarousel .carousel-item img { width:100%; height:100%; object-fit:contain; display:block; background:rgba(0,0,0,0.06); }
                     /* Slide default - percepat sedikit agar smooth */
